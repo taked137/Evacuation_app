@@ -1,13 +1,13 @@
 package take.dic.sensorapp
 
-import org.altbeacon.beacon.Identifier
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
-data class BeaconModel(
-    val uuid: Identifier,
-    val major: Identifier,
-    val minor: Identifier,
-    val rssi: Int,
-    val txPower: Int,
-    val distance: Double,
-    val receivedTime: String
-)
+open class BeaconModel(
+    @PrimaryKey
+    var id: Int = 0,
+    var major: String = "",
+    var minor: String = "",
+    var rssi: Int = 0,
+    var receivedTime: String = ""
+) : RealmObject()

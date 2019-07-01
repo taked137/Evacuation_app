@@ -1,13 +1,13 @@
 package take.dic.sensorapp
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.RemoteException
-import android.widget.*
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import io.realm.Realm
 import org.altbeacon.beacon.*
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.BeaconParser
-import org.altbeacon.beacon.MonitorNotifier
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
     private lateinit var listView: ListView
     private lateinit var arrayAdapter: ArrayAdapter<String>
+    private lateinit var realm: Realm
     private val data = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +35,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         listView = findViewById(R.id.listview)
         arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
         listView.adapter = arrayAdapter
+
+        Realm.init(this)
     }
 
-    override fun onResume(){
+    override fun onResume() {
         super.onResume()
         beaconManager.bind(this)
     }
@@ -73,13 +76,34 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         }
 
         beaconManager.addRangeNotifier { beacons, _ ->
-            //count = 0
 
-            //検出したBeaconの情報を全てlog出力
+            //検出したBeaconの情報を全て出力
             for (beacon in beacons) {
-                val currentBeacon = BeaconModel(beacon.id1, beacon.id2, beacon.id3, beacon.rssi, beacon.txPower, beacon.distance, SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(Calendar.getInstance().time))
-                beaconList.add(currentBeacon)
-                data.add("${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}")
+                realm = Realm.getDefaultInstance()
+                var id: Int = try {
+                    realm.where(BeaconModel::class.java).findAll().size + 1
+                } catch (e: Exception) {
+                    1
+                }
+                val currentBeacon = BeaconModel(
+                    id,
+                    beacon.id1.toString(),
+                    beacon.id2.toString(),
+                    beacon.rssi,
+                    SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(Calendar.getInstance().time)
+                )
+                realm.executeTransaction {
+                    val model = realm.createObject(BeaconModel::class.java!!, id)
+                    model.major = currentBeacon.major
+                    model.minor = currentBeacon.minor
+                    model.rssi = currentBeacon.rssi
+                    model.receivedTime = currentBeacon.receivedTime
+                    realm.copyToRealm(model)
+                }
+                realm.where(BeaconModel::class.java).findAll().forEach { Log.e("got", it.toString()) }
+
+                data.add(0, "${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}")
+                realm.close()
             }
             runOnUiThread {
                 arrayAdapter.notifyDataSetChanged()
@@ -91,5 +115,17 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             e.printStackTrace()
         }
 
+    }
+
+    // 試験用(削除予定)
+    override fun onStop() {
+
+        realm = Realm.getDefaultInstance()
+        realm.beginTransaction()
+        realm.delete(BeaconModel::class.java)
+        realm.commitTransaction()
+        realm.close()
+
+        super.onStop()
     }
 }
