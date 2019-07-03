@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
     private val data = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.relative_test)
+        setContentView(R.layout.activity_main)
 
         supportActionBar!!.hide()
         beaconManager = BeaconManager.getInstanceForApplication(this)
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
-        listView = findViewById(R.id.listview)
+        //listView = findViewById(R.id.listview)
         arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
-        listView.adapter = arrayAdapter
+        //listView.adapter = arrayAdapter
 
         Realm.init(this)
     }
