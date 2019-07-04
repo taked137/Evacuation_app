@@ -6,19 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import take.dic.sensorapp.acceleration.AccelerationValue
+import take.dic.sensorapp.angular.AngularValue
 import take.dic.sensorapp.beacon.BeaconValue
 import take.dic.sensorapp.databinding.FragmentValueBinding
 import take.dic.sensorapp.gps.GPSValue
 
 class ValueFragment : Fragment(){
-    val gps = GPSValue(title = "GPS", latitude = "緯度", longitude = "経度")
-    val acceleration = AccelerationValue(title = "加速度", x = "x軸", y = "y軸", z = "z軸")
-    val beacon = BeaconValue()
+    private val gps = GPSValue(title = "GPS", latitude = "緯度", longitude = "経度")
+    private val acceleration = AccelerationValue(title = "加速度", x = "x軸", y = "y軸", z = "z軸")
+    private val angular = AngularValue(title = "角速度", x = "x軸", y = "y軸", z = "z軸")
+    private val beacon = BeaconValue()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentValueBinding.inflate(inflater, container, false)
         binding.gps = gps
         binding.acceleration = acceleration
+        binding.angular = angular
         binding.beacon = beacon
         return binding.root
     }
