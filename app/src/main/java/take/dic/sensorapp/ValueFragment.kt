@@ -12,11 +12,12 @@ import take.dic.sensorapp.databinding.FragmentValueBinding
 
 class ValueFragment : Fragment(){
     val gps = GPSValue(title = "GPS", latitude = "緯度", longitude = "経度")
+    val beacon = BeaconValue()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentValueBinding.inflate(inflater, container, false)
         binding.gps = gps
-
+        binding.beacon = beacon
         return binding.root
         /*
         val view = inflater.inflate(R.layout.fragment_value, container, false)
