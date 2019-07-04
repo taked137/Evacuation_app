@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
     private val data = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.relative_test)
+        setContentView(R.layout.activity_main)
 
         supportActionBar!!.hide()
         beaconManager = BeaconManager.getInstanceForApplication(this)
@@ -37,6 +37,10 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         listView.adapter = arrayAdapter
 
         Realm.init(this)
+
+        /* 画像を表示するfragmentを追加します(雑)
+        supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()
+        */
     }
 
     override fun onResume() {
@@ -102,7 +106,10 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 }
                 realm.where(BeaconModel::class.java).findAll().forEach { Log.e("got", it.toString()) }
 
-                data.add(0, "${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}")
+                data.add(
+                    0,
+                    "${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}"
+                )
                 realm.close()
             }
             runOnUiThread {
