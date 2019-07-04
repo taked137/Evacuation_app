@@ -1,41 +1,25 @@
 package take.dic.sensorapp
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import take.dic.sensorapp.acceleration.AccelerationValue
+import take.dic.sensorapp.beacon.BeaconValue
 import take.dic.sensorapp.databinding.FragmentValueBinding
+import take.dic.sensorapp.gps.GPSValue
 
 class ValueFragment : Fragment(){
     val gps = GPSValue(title = "GPS", latitude = "緯度", longitude = "経度")
+    val acceleration = AccelerationValue(title = "加速度", x = "x軸", y = "y軸", z = "z軸")
     val beacon = BeaconValue()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentValueBinding.inflate(inflater, container, false)
         binding.gps = gps
+        binding.acceleration = acceleration
         binding.beacon = beacon
         return binding.root
-        /*
-        val view = inflater.inflate(R.layout.fragment_value, container, false)
-        val data = mutableListOf<String>()
-        data.add("1")
-        data.add("1")
-        for(i in 1..20)
-            data.add("1")
-
-        val listView = view.findViewById<ListView>(R.id.listview)
-        val arrayAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, data)
-        listView.adapter = arrayAdapter
-
-        data.add("final")
-        activity!!.runOnUiThread{
-            arrayAdapter.notifyDataSetChanged()
-        }
-        return view
-        */
     }
 }

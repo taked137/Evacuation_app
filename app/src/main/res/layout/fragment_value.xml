@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="gps" type="take.dic.sensorapp.GPSValue"/>
-
-        <variable name="beacon" type="take.dic.sensorapp.BeaconValue"/>
+        <variable name="gps" type="take.dic.sensorapp.gps.GPSValue"/>
+        <variable name="acceleration" type="take.dic.sensorapp.acceleration.AccelerationValue"/>
+        <variable name="beacon" type="take.dic.sensorapp.beacon.BeaconValue"/>
     </data>
 
     <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="16dp">
@@ -42,14 +42,14 @@
         <!--加速度についてのテキスト-->
         <TextView
                 android:id="@+id/Acceleration"
-                android:text="加速度"
+                android:text="@{acceleration.title}"
                 android:layout_toRightOf="@+id/center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30dp" android:layout_marginLeft="20dp"/>
         <TextView
                 android:id="@+id/AccelerationX"
-                android:text="x軸"
+                android:text="@{acceleration.x}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/Acceleration"
@@ -57,7 +57,7 @@
                 android:textSize="17dp"/>
         <TextView
                 android:id="@+id/AccelerationY"
-                android:text="y軸"
+                android:text="@{acceleration.y}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/AccelerationX"
@@ -65,7 +65,7 @@
                 android:textSize="17dp"/>
         <TextView
                 android:id="@+id/AccelerationZ"
-                android:text="z軸"
+                android:text="@{acceleration.z}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/AccelerationY"
@@ -148,7 +148,7 @@
                 android:layout_centerVertical="true"/>
 
         <!--得られたビーコン情報を入れるリスト-->
-        <take.dic.sensorapp.BindingListView
+        <take.dic.sensorapp.beacon.BindingListView
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

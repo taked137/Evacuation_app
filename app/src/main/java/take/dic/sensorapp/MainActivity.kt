@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import io.realm.Realm
 import org.altbeacon.beacon.*
+import take.dic.sensorapp.beacon.BeaconModel
 import java.text.SimpleDateFormat
 import java.util.*
 
