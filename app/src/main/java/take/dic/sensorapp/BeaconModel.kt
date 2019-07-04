@@ -11,7 +11,3 @@ open class BeaconModel(
     var rssi: Int = 0,
     var receivedTime: String = ""
 ) : RealmObject()
-
-data class BeaconModel2(
-    val a:String
-)
