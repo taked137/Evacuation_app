@@ -7,7 +7,7 @@
 
 
     <TextView
-            android:id="@+id/text_x"
+            android:id="@+id/fragment_accel_x"
             android:textSize="17dp"
             android:textColor="#00f"
             android:layout_width="wrap_content"
@@ -17,22 +17,22 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-            android:id="@+id/text_y"
+            android:id="@+id/fragment_accel_y"
             android:textSize="17dp"
             android:textColor="#00f"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_x"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_accel_x"
             app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-            android:id="@+id/text_z"
+            android:id="@+id/fragment_accel_z"
             android:textSize="17dp"
             android:textColor="#00f"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_y"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_accel_y"
             app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.acceleration_fragment.*
 import take.dic.sensorapp.R
 
@@ -59,15 +60,17 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
             Sensor.TYPE_ACCELEROMETER
         )
 
-        sensorManager!!.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL)
-        //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_FASTEST);
-        //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_GAME);
-        //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
+        if (accel != null) {
+            sensorManager!!.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL)
+            //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+            //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_GAME);
+            //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
+        } else {
+            Toast.makeText(context, "加速度センサーが存在しません", Toast.LENGTH_LONG).show()
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.acceleration_fragment, container, false)
@@ -86,20 +89,15 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSensorChanged(event: SensorEvent) {
-        val sensorX: Float
-        val sensorY: Float
-        val sensorZ: Float
+
 
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            sensorX = event.values[0]
-            sensorY = event.values[1]
-            sensorZ = event.values[2]
 
-            accelerationData = AccelerationData(sensorX, sensorY, sensorZ,"")
+            accelerationData = AccelerationData(event.values[0], event.values[1], event.values[2],"")
 
-            text_x.text = accelerationData!!.xAcceleration.toString()
-            text_y.text = accelerationData!!.yAcceleration.toString()
-            text_z.text = accelerationData!!.zAcceleration.toString()
+            fragment_accel_x.text = accelerationData!!.xAcceleration.toString()
+            fragment_accel_y.text = accelerationData!!.yAcceleration.toString()
+            fragment_accel_z.text = accelerationData!!.zAcceleration.toString()
 
             showInfo(event)
         }
