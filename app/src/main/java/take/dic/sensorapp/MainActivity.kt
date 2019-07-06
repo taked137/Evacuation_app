@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.add(R.id.AccelerationContainer, AccelerationSensorFragment.createInstance("渡したい文字列"))
+            transaction.add(R.id.GyroContainer, GyroSensorFragment.createInstance("渡したい文字列"))
             transaction.commit()
         }
 
