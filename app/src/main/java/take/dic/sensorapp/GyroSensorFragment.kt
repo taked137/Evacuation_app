@@ -54,8 +54,16 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
     override fun onResume() {
         super.onResume()
 
-        // Listenerの登録
+        // Listenerの登録 下の二つのgyroのうちのどちらかのコメントアウトを外す
+
+        // ジャイロドリフトの補正があるセンサー出力です。
         val gyro = sensorManager!!.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+
+        /*ジャイロドリフトの補正がないセンサー出力です。ジャイロドリフトの補正がないと放置しておくとバイアスがかかったよ
+          うに徐々にずれていきます。 　
+          ただキャリブレーションによる値のジャンプがより滑らかで、この他のセンサー値との合算を考えるケースではこのセンサ
+          ー値を使う方が一般的には役に立ちます。*/
+        //val gyro = sensorManager!!.getDefaultSensor(Sensor.TYPE_GYROSCOPE_UNCALIBRATED)
 
         if (gyro != null) {
             sensorManager!!.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
@@ -83,6 +91,12 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
     override fun onSensorChanged(event: SensorEvent) {
 
         if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
+            gyroData = GyroData(event.values[0], event.values[1], event.values[2])
+
+            fragment_gyro_x.text = gyroData!!.xGyroData.toString()
+            fragment_gyro_y.text = gyroData!!.yGyroData.toString()
+            fragment_gyro_z.text = gyroData!!.zGyroData.toString()
+        } else if (event.sensor.type == Sensor.TYPE_GYROSCOPE_UNCALIBRATED) {
             gyroData = GyroData(event.values[0], event.values[1], event.values[2])
 
             fragment_gyro_x.text = gyroData!!.xGyroData.toString()
