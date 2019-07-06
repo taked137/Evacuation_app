@@ -8,6 +8,7 @@ import org.altbeacon.beacon.*
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.MonitorNotifier
+import take.dic.sensorapp.Acceleration.AccelerationSensorFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +28,13 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.relative_test)
+
+        //加速度取得用フラグメント
+        if (savedInstanceState == null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.AccelerationContainer, AccelerationSensorFragment.createInstance("渡したい文字列"))
+            transaction.commit()
+        }
 
         supportActionBar!!.hide()
         beaconManager = BeaconManager.getInstanceForApplication(this)

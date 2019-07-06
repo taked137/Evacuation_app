@@ -64,6 +64,16 @@
             android:layout_toRightOf="@+id/center"
             android:textSize="17dp"/>
 
+    <!--取得した加速度を表示するフラグメントの場所-->
+    <LinearLayout
+            android:id="@+id/AccelerationContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/AccelerationX"
+            android:layout_below="@+id/Acceleration">
+    </LinearLayout>
+
     <!--角速度についてのテキスト-->
     <TextView
             android:id="@+id/Angular"
