@@ -17,7 +17,7 @@
             android:textSize="30dp" android:layout_marginLeft="20dp"/>
     <TextView
             android:id="@+id/GPSX"
-            android:text="x座標"
+            android:text="x座標(経度?)"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/GPS"
@@ -25,11 +25,21 @@
 
     <TextView
             android:id="@+id/GPSY"
-            android:text="y座標"
+            android:text="y座標(緯度?)"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/GPSX"
             android:textSize="17dp"/>
+
+    <!--取得した位置情報(経度・緯度)を表示するフラグメントの場所-->
+    <LinearLayout
+            android:id="@+id/GPSContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/GPSX"
+            android:layout_below="@+id/GPS">
+    </LinearLayout>
 
     <!--加速度についてのテキスト-->
     <TextView
