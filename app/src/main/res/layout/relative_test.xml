@@ -121,7 +121,7 @@
             android:textSize="17dp"/>
 
 
-    <!--取得した加速度を表示するフラグメントの場所-->
+    <!--取得した角速度を表示するフラグメントの場所-->
     <LinearLayout
             android:id="@+id/GyroContainer"
             android:layout_width="wrap_content"
@@ -130,6 +130,7 @@
             android:layout_toRightOf="@+id/AngularX"
             android:layout_below="@+id/Angular">
     </LinearLayout>
+
 
     <!--方位についてのテキスト-->
     <TextView
@@ -162,6 +163,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/OrientationY"
             android:textSize="17dp"/>
+
+    <!--取得した角速度を表示するフラグメントの場所-->
+    <LinearLayout
+            android:id="@+id/OrientationContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/OrientationX"
+            android:layout_below="@+id/Orientation">
+    </LinearLayout>
+
 
     <!--水平で2分割する為のダミーView-->
     <View

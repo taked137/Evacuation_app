@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             transaction.add(R.id.AccelerationContainer, AccelerationSensorFragment.createInstance("渡したい文字列"))
             transaction.add(R.id.GyroContainer, GyroSensorFragment.createInstance("渡したい文字列"))
             transaction.add(R.id.GPSContainer, GPSFragment.createInstance("渡したい文字列"))
+            transaction.add(R.id.OrientationContainer, OrientationFragment.createInstance("渡したい文字列"))
             transaction.commit()
         }
 
