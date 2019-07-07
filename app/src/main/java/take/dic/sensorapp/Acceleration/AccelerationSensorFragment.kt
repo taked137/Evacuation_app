@@ -5,13 +5,11 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+
 import android.widget.Toast
 import kotlinx.android.synthetic.main.acceleration_fragment.*
 import take.dic.sensorapp.R
@@ -19,8 +17,6 @@ import take.dic.sensorapp.R
 
 class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEventListener {
 
-
-    var list : MutableList<String>? = null
     private var testStr: String? = null //MainActivityから受け取る文字列(何かあれば)
     private var sensorManager: SensorManager? = null
 
@@ -39,7 +35,6 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,6 +57,9 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
 
         if (accel != null) {
             sensorManager!!.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL)
+            // SensorManager.SENSOR_DELAY_NORMALの部分を変えれば周期が変えれる
+            // 100000000くらいにすれば見やすいかも
+
             //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_FASTEST);
             //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_GAME);
             //sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
@@ -76,7 +74,7 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
         return inflater.inflate(R.layout.acceleration_fragment, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
@@ -87,7 +85,7 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
         sensorManager!!.unregisterListener(this)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     override fun onSensorChanged(event: SensorEvent) {
 
 
@@ -104,7 +102,6 @@ class AccelerationSensorFragment : android.support.v4.app.Fragment() , SensorEve
     }
 
     // （お好みで）加速度センサーの各種情報を表示
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun showInfo(event: SensorEvent) {
         // センサー名
         val info = StringBuffer("Name: ")

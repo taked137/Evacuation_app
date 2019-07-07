@@ -5,9 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +15,6 @@ import kotlinx.android.synthetic.main.gyro_fragment.*
 
 class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListener {
 
-
-    var list : MutableList<String>? = null
     private var testStr: String? = null //MainActivityから受け取る文字列(何かあれば)
     private var sensorManager: SensorManager? = null
 
@@ -37,17 +33,16 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         val args = arguments
-        if (args == null) {
-            testStr = ""
+        testStr = if (args == null) {
+            ""
         } else {
-            testStr = args.getString(KEY_TEST)
+            args.getString(KEY_TEST)
         }
     }
 
@@ -66,7 +61,9 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
         //val gyro = sensorManager!!.getDefaultSensor(Sensor.TYPE_GYROSCOPE_UNCALIBRATED)
 
         if (gyro != null) {
-            sensorManager!!.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
+            sensorManager!!.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
+            // SensorManager.SENSOR_DELAY_NORMALの部分を変えれば周期が変えれる
+            // 100000000くらいにすれば見やすいかも
         } else {
             Toast.makeText(context, "角速度センサーが存在しません", Toast.LENGTH_LONG).show()
         }
@@ -87,7 +84,6 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
         sensorManager!!.unregisterListener(this)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSensorChanged(event: SensorEvent) {
 
         if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {

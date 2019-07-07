@@ -1,7 +1,6 @@
 package take.dic.sensorapp
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,10 +8,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.location.LocationProvider
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -43,7 +40,6 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,10 +64,10 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
         }
 
         val args = arguments
-        if (args == null) {
-            testStr = ""
+        testStr = if (args == null) {
+            ""
         } else {
-            testStr = args.getString(KEY_TEST)
+            args.getString(KEY_TEST)
         }
     }
 
@@ -152,7 +148,7 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+
     override fun onLocationChanged(location: Location) {
         gpsData = GPSData(location.latitude, location.longitude)
 
