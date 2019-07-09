@@ -1,4 +1,4 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.beacon
 
 import android.content.Context
 import android.util.AttributeSet
