@@ -38,7 +38,7 @@ class ValueFragment : Fragment(), BeaconConsumer {
 
     override fun onResume() {
         super.onResume()
-        //beaconManager.bind(this)
+        beaconManager.bind(this)
     }
 
     override fun onPause() {
