@@ -15,6 +15,7 @@ import org.altbeacon.beacon.*
 import take.dic.sensorapp.databinding.FragmentValueBinding
 import take.dic.sensorapp.acceleration.AccelerationValue
 import take.dic.sensorapp.angular.AngularValue
+import take.dic.sensorapp.beacon.BeaconModel
 import take.dic.sensorapp.beacon.BeaconValue
 import take.dic.sensorapp.gps.GPSValue
 import take.dic.sensorapp.orientation.OrientationValue
@@ -23,9 +24,6 @@ import java.util.*
 
 class ValueFragment : Fragment(), BeaconConsumer {
 
-=======
-
-class ValueFragment : Fragment(){
     private val gps = GPSValue(title = "GPS", latitude = "緯度", longitude = "経度")
     private val acceleration = AccelerationValue(title = "加速度", x = "x軸", y = "y軸", z = "z軸")
     private val angular = AngularValue(title = "角速度", x = "x軸", y = "y軸", z = "z軸")
@@ -46,7 +44,7 @@ class ValueFragment : Fragment(){
         binding.acceleration = acceleration
         binding.angular = angular
         binding.orientation = orientation
-        binding.beacon = beacon
+        binding.beacon = mBeacon
 
         beaconManager = BeaconManager.getInstanceForApplication(activity!!)
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
