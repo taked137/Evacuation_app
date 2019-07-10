@@ -56,11 +56,11 @@ class ValueFragment : Fragment(), BeaconConsumer {
 
     override fun getApplicationContext(): Context = activity!!.applicationContext
 
-    override fun unbindService(p0: ServiceConnection?) {
+    override fun unbindService(p0: ServiceConnection) {
         activity!!.unbindService(p0)
     }
 
-    override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
+    override fun bindService(p0: Intent?, p1: ServiceConnection, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
 
     override fun onResume() {
         super.onResume()
@@ -101,7 +101,6 @@ class ValueFragment : Fragment(), BeaconConsumer {
                 state = "Determine State$i"
             }
         })
-        Log.e("jsjd",state)
         try {
             //Beacon情報の監視を開始
             beaconManager.startMonitoringBeaconsInRegion(mRegion)
@@ -125,7 +124,7 @@ class ValueFragment : Fragment(), BeaconConsumer {
                     SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(Calendar.getInstance().time)
                 )
                 realm.executeTransaction {
-                    val model = realm.createObject(BeaconModel::class.java!!, id)
+                    val model = realm.createObject(BeaconModel::class.java, id)
                     model.major = currentBeacon.major
                     model.minor = currentBeacon.minor
                     model.rssi = currentBeacon.rssi

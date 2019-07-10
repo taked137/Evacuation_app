@@ -2,6 +2,7 @@ package take.dic.sensorapp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import take.dic.sensorapp.image.ImageFragment
 
 class MainActivity : AppCompatActivity() {
 
