@@ -29,7 +29,7 @@ class ValueFragment : Fragment(), BeaconConsumer {
     private val angular = AngularValue(title = "角速度", x = "x軸", y = "y軸", z = "z軸")
     private val orientation = OrientationValue(title = "方位", x = "x軸", y = "y軸", z = "z軸")
     private val mBeacon = BeaconValue()
-    private lateinit var state: String
+    private var state = ""
     private lateinit var mRegion: Region
     private lateinit var realm: Realm
 
@@ -101,6 +101,7 @@ class ValueFragment : Fragment(), BeaconConsumer {
                 state = "Determine State$i"
             }
         })
+        Log.e("jsjd",state)
         try {
             //Beacon情報の監視を開始
             beaconManager.startMonitoringBeaconsInRegion(mRegion)

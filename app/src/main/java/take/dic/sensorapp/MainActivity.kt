@@ -10,5 +10,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar!!.hide()
+
+        // 画像を表示するfragmentを追加します(雑)
+        //supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()
     }
 }
