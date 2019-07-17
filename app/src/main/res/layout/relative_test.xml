@@ -17,7 +17,7 @@
             android:textSize="30dp" android:layout_marginLeft="20dp"/>
     <TextView
             android:id="@+id/GPSX"
-            android:text="x座標(経度?)"
+            android:text="経度"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/GPS"
@@ -25,10 +25,18 @@
 
     <TextView
             android:id="@+id/GPSY"
-            android:text="y座標(緯度?)"
+            android:text="緯度"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/GPSX"
+            android:textSize="17dp"/>
+
+    <TextView
+            android:id="@+id/GPSA"
+            android:text="高度"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/GPSY"
             android:textSize="17dp"/>
 
     <!--取得した位置情報(経度・緯度)を表示するフラグメントの場所-->

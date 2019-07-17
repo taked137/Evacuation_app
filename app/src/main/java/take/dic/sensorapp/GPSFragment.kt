@@ -150,10 +150,12 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
 
 
     override fun onLocationChanged(location: Location) {
-        gpsData = GPSData(location.latitude, location.longitude)
+        gpsData = GPSData(location.latitude, location.longitude, location.altitude)
 
         fragment_gps_x.text = gpsData!!.longitude.toString()
         fragment_gps_y.text = gpsData!!.latitude.toString()
+        fragment_gps_a.text = gpsData!!.altitude.toString()
+        //Toast.makeText(context, "高度は" + gpsData!!.altitude.toString(), Toast.LENGTH_SHORT).show()
 
     }
 
