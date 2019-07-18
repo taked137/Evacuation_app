@@ -48,7 +48,6 @@ class ValueFragment : Fragment(), BeaconConsumer {
 
         beaconManager = BeaconManager.getInstanceForApplication(activity!!)
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
-        binding.beacon = mBeacon
 
         Realm.init(activity!!)
         return binding.root
@@ -132,12 +131,8 @@ class ValueFragment : Fragment(), BeaconConsumer {
                     realm.copyToRealm(model)
                 }
                 realm.where(BeaconModel::class.java).findAll().forEach { Log.e("got", it.toString()) }
+                pushBeaconModel("${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}")
 
-
-                mBeacon.list.add(
-                    0,
-                    "${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}"
-                )
                 realm.close()
             }
         }
@@ -145,6 +140,12 @@ class ValueFragment : Fragment(), BeaconConsumer {
             beaconManager.startRangingBeaconsInRegion(mRegion)
         } catch (e: RemoteException) {
             e.printStackTrace()
+        }
+    }
+
+    private fun pushBeaconModel(element: String){
+        activity!!.runOnUiThread{
+            mBeacon.list.add(0, element)
         }
     }
 }
