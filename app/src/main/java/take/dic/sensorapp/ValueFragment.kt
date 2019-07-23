@@ -1,5 +1,7 @@
 package take.dic.sensorapp
 
+import android.app.AlertDialog
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -12,11 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import io.realm.Realm
 import org.altbeacon.beacon.*
-import take.dic.sensorapp.databinding.FragmentValueBinding
 import take.dic.sensorapp.acceleration.AccelerationValue
 import take.dic.sensorapp.angular.AngularValue
 import take.dic.sensorapp.beacon.BeaconModel
 import take.dic.sensorapp.beacon.BeaconValue
+import take.dic.sensorapp.databinding.FragmentValueBinding
 import take.dic.sensorapp.gps.GPSValue
 import take.dic.sensorapp.orientation.OrientationValue
 import java.text.SimpleDateFormat
@@ -24,6 +26,7 @@ import java.util.*
 
 class ValueFragment : Fragment(), BeaconConsumer {
 
+    val REQUEST_ENABLE_BLUETOOTH = 4
     private val gps = GPSValue(title = "GPS", latitude = "緯度", longitude = "経度")
     private val acceleration = AccelerationValue(title = "加速度", x = "x軸", y = "y軸", z = "z軸")
     private val angular = AngularValue(title = "角速度", x = "x軸", y = "y軸", z = "z軸")
@@ -40,6 +43,8 @@ class ValueFragment : Fragment(), BeaconConsumer {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentValueBinding.inflate(inflater, container, false)
+
+        setBluetooth()
         binding.gps = gps
         binding.acceleration = acceleration
         binding.angular = angular
@@ -83,7 +88,7 @@ class ValueFragment : Fragment(), BeaconConsumer {
     }
 
     override fun onBeaconServiceConnect() {
-        mRegion= Region("iBeacon", null, null, null)
+        mRegion = Region("iBeacon", null, null, null)
         beaconManager.addMonitorNotifier(object : MonitorNotifier {
             override fun didEnterRegion(region: Region) {
                 //領域への入場を検知
@@ -120,7 +125,7 @@ class ValueFragment : Fragment(), BeaconConsumer {
                     beacon.id2.toString(),
                     beacon.id3.toString(),
                     beacon.rssi,
-                    SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(Calendar.getInstance().time)
+                    SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS z").format(Calendar.getInstance().time)
                 )
                 realm.executeTransaction {
                     val model = realm.createObject(BeaconModel::class.java, id)
@@ -143,9 +148,32 @@ class ValueFragment : Fragment(), BeaconConsumer {
         }
     }
 
-    private fun pushBeaconModel(element: String){
-        activity!!.runOnUiThread{
+    private fun pushBeaconModel(element: String) {
+        activity!!.runOnUiThread {
             mBeacon.list.add(0, element)
+        }
+    }
+
+    private fun setBluetooth() {
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+            val btOn = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(btOn, REQUEST_ENABLE_BLUETOOTH)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_ENABLE_BLUETOOTH) {
+            AlertDialog.Builder(activity)
+                .setTitle("")
+                .setMessage("アプリを終了しますか")
+                .setPositiveButton("はい") { _, _ ->
+                    activity!!.finish()
+                    activity!!.moveTaskToBack(true)
+                }
+                .setNegativeButton("いいえ") { _, _ ->
+                    setBluetooth()
+                }
+                .show()
         }
     }
 }
