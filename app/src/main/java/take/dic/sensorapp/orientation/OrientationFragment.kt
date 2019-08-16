@@ -1,4 +1,4 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.orientation
 
 import android.content.Context
 import android.hardware.Sensor
@@ -8,18 +8,20 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.orientation_fragment.*
+import kotlinx.android.synthetic.main.fragment_orientation.*
+import take.dic.sensorapp.BaseBindingFragment
+import take.dic.sensorapp.R
+import take.dic.sensorapp.databinding.FragmentOrientationBinding
 
 
-class OrientationFragment : android.support.v4.app.Fragment() , SensorEventListener {
+class OrientationFragment : BaseBindingFragment() , SensorEventListener {
 
-    private var testStr: String? = null //MainActivityから受け取る文字列(何かあれば)
     private var sensorManager: SensorManager? = null
+    private val orientation = OrientationData(title = "方位", x = "", y = "", z = "")
 
     /** 行列数  */
     private val MATRIX_SIZE = 16
@@ -32,32 +34,10 @@ class OrientationFragment : android.support.v4.app.Fragment() , SensorEventListe
     /** 加速度行列  */
     private var mAccelerometerValues: FloatArray? = null
 
-
-    companion object {
-        var orientationData : OrientationData? = null //方位データが収納される
-
-        private const val KEY_TEST = "test"
-
-        fun createInstance(testStr: String) : OrientationFragment {
-            val orientationFragment = OrientationFragment()
-            val args = Bundle()
-            args.putString(KEY_TEST, testStr)
-            orientationFragment.arguments = args
-            return orientationFragment
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-        val args = arguments
-        testStr = if (args == null) {
-            ""
-        } else {
-            args.getString(KEY_TEST)
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -92,7 +72,9 @@ class OrientationFragment : android.support.v4.app.Fragment() , SensorEventListe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.orientation_fragment, container, false)
+        val binding = bind<FragmentOrientationBinding>(inflater, container, R.layout.fragment_orientation)
+        binding.orientation = orientation
+        return binding.root
     }
 
 
@@ -132,30 +114,20 @@ class OrientationFragment : android.support.v4.app.Fragment() , SensorEventListe
             )
             SensorManager.getOrientation(remapedMatrix, orientationValues)
 
-            orientationData = OrientationData(
-                radianToDegrees(orientationValues[1]),
-                radianToDegrees(orientationValues[2]),
-                radianToDegrees(orientationValues[0])
-            )
-
-            fragment_orientation_x.text = orientationData!!.xAttitude.toString()
-            fragment_orientation_y.text = orientationData!!.yAttitude.toString()
-            fragment_orientation_z.text = orientationData!!.zAttitude.toString()
+            orientation.xValue.set(radianToDegrees(orientationValues[1]).toString())
+            orientation.yValue.set(radianToDegrees(orientationValues[2]).toString())
+            orientation.zValue.set(radianToDegrees(orientationValues[0]).toString())
         }
-
     }
 
     private fun radianToDegrees(angrad : Float) : Float{
-        if (angrad >= 0 ) {
-            return Math.toDegrees(angrad.toDouble()).toFloat()
+        return if (angrad >= 0 ) {
+            Math.toDegrees(angrad.toDouble()).toFloat()
         } else {
-            return (360 + Math.toDegrees(angrad.toDouble())).toFloat()
+            (360 + Math.toDegrees(angrad.toDouble())).toFloat()
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-
     }
-
-
 }

@@ -1,4 +1,4 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.gps
 
 import android.Manifest
 import android.content.Context
@@ -17,28 +17,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.gps_fragment.*
+import take.dic.sensorapp.databinding.FragmentGpsBinding
 
+class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
-class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
-
-    private var testStr: String? = null //MainActivityから受け取る文字列(何かあれば)
-    private var locationManager: LocationManager? = null
-
-
-    companion object {
-        var gpsData : GPSData? = null
-
-        private const val KEY_TEST = "test"
-
-        fun createInstance(testStr: String) : GPSFragment {
-            val gpsFragment = GPSFragment()
-            val args = Bundle()
-            args.putString(KEY_TEST, testStr)
-            gpsFragment.arguments = args
-            return gpsFragment
-        }
-    }
+    private lateinit var locationManager: LocationManager
+    private val gps = GPSData(title = "GPS", latitude = "", longitude = "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,29 +39,25 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
             )
         } else {
             locationStart()
-
-            locationManager!!.requestLocationUpdates(
+            locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 1000, 50f, this
             )
-
-        }
-
-        val args = arguments
-        testStr = if (args == null) {
-            ""
-        } else {
-            args.getString(KEY_TEST)
         }
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.gps_fragment, container, false)
+        val binding = FragmentGpsBinding.inflate(inflater, container, false)
+        binding.gps = gps
+
+        return binding.root
     }
 
 
@@ -88,7 +68,7 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
         // LocationManager インスタンス生成
         locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        if (locationManager != null && locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Log.d("debug", "location manager Enabled")
         } else {
             // GPSを設定するように促す
@@ -111,7 +91,7 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
             return
         }
 
-        locationManager!!.requestLocationUpdates(
+        locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
             1000, 50f, this
         )
@@ -150,19 +130,13 @@ class GPSFragment : android.support.v4.app.Fragment() , LocationListener {
 
 
     override fun onLocationChanged(location: Location) {
-        gpsData = GPSData(location.latitude, location.longitude)
-
-        fragment_gps_x.text = gpsData!!.longitude.toString()
-        fragment_gps_y.text = gpsData!!.latitude.toString()
-
+        gps.longitudeValue.set(location.longitude.toString())
+        gps.latitudeValue.set(location.latitude.toString())
     }
 
     override fun onProviderEnabled(provider: String) {
-
     }
 
     override fun onProviderDisabled(provider: String) {
-
     }
-
 }

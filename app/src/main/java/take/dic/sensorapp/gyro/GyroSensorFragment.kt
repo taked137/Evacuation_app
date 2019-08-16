@@ -1,4 +1,4 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.gyro
 
 import android.content.Context
 import android.hardware.Sensor
@@ -10,40 +10,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.gyro_fragment.*
+import kotlinx.android.synthetic.main.fragment_gyro.*
+import take.dic.sensorapp.BaseBindingFragment
+import take.dic.sensorapp.R
+import take.dic.sensorapp.databinding.FragmentGyroBinding
 
 
-class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListener {
+class GyroSensorFragment : BaseBindingFragment() , SensorEventListener {
 
     private var testStr: String? = null //MainActivityから受け取る文字列(何かあれば)
     private var sensorManager: SensorManager? = null
-
-
-    companion object {
-        var gyroData : GyroData? = null //角速度データが収納される
-
-        private const val KEY_TEST = "test"
-
-        fun createInstance(testStr: String) : GyroSensorFragment {
-            val gyroFragment = GyroSensorFragment()
-            val args = Bundle()
-            args.putString(KEY_TEST, testStr)
-            gyroFragment.arguments = args
-            return gyroFragment
-        }
-    }
+    private val gyro = GyroData(title = "角速度", x = "", y = "", z = "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        val args = arguments
-        testStr = if (args == null) {
-            ""
-        } else {
-            args.getString(KEY_TEST)
-        }
     }
 
     override fun onResume() {
@@ -71,9 +54,10 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.gyro_fragment, container, false)
+        val binding = bind<FragmentGyroBinding>(inflater, container, R.layout.fragment_gyro)
+        binding.gyro = gyro
+        return binding.root
     }
 
 
@@ -87,24 +71,16 @@ class GyroSensorFragment : android.support.v4.app.Fragment() , SensorEventListen
     override fun onSensorChanged(event: SensorEvent) {
 
         if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
-            gyroData = GyroData(event.values[0], event.values[1], event.values[2])
-
-            fragment_gyro_x.text = gyroData!!.xGyroData.toString()
-            fragment_gyro_y.text = gyroData!!.yGyroData.toString()
-            fragment_gyro_z.text = gyroData!!.zGyroData.toString()
+            gyro.xValue.set(event.values[0].toString())
+            gyro.yValue.set(event.values[1].toString())
+            gyro.zValue.set(event.values[2].toString())
         } else if (event.sensor.type == Sensor.TYPE_GYROSCOPE_UNCALIBRATED) {
-            gyroData = GyroData(event.values[0], event.values[1], event.values[2])
-
-            fragment_gyro_x.text = gyroData!!.xGyroData.toString()
-            fragment_gyro_y.text = gyroData!!.yGyroData.toString()
-            fragment_gyro_z.text = gyroData!!.zGyroData.toString()
+            gyro.xValue.set(event.values[0].toString())
+            gyro.yValue.set(event.values[1].toString())
+            gyro.zValue.set(event.values[2].toString())
         }
-
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-
     }
-
-
 }

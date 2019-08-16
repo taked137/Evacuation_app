@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="acceleration" type="take.dic.sensorapp.acceleration.AccelerationData"/>
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/title"
+                android:text="@{acceleration.title}"
+                android:layout_toRightOf="@+id/center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"/>
+        <TextView
+                android:id="@+id/x"
+                android:text="@{acceleration.XValue}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/y"
+                android:text="@{acceleration.YValue}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/x"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/z"
+                android:text="@{acceleration.ZValue}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/y"
+                android:textSize="17dp"/>
+
+    </RelativeLayout>
+</layout>

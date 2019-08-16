@@ -1,34 +1,11 @@
 package take.dic.sensorapp
 
 import android.os.Bundle
-import android.os.RemoteException
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import io.realm.Realm
-import org.altbeacon.beacon.*
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.BeaconParser
-import org.altbeacon.beacon.MonitorNotifier
-import take.dic.sensorapp.Acceleration.AccelerationSensorFragment
-import java.text.SimpleDateFormat
-import java.util.*
+import take.dic.sensorapp.image.ImageFragment
 
-class MainActivity : AppCompatActivity(), BeaconConsumer {
-    private lateinit var state: String
-    private lateinit var mRegion: Region
-    private val beaconList = mutableListOf<BeaconModel>()
+class MainActivity : AppCompatActivity() {
 
-    //iBeacon認識のためのフォーマット設定
-    private val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
-
-    private lateinit var beaconManager: BeaconManager
-
-    private lateinit var listView: ListView
-    private lateinit var arrayAdapter: ArrayAdapter<String>
-    private lateinit var realm: Realm
-    private val data = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,6 +16,8 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         * GPSを用いた位置情報(経度・緯度)取得用フラグメント
            を追加している
         */
+
+        /*
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.add(R.id.AccelerationContainer, AccelerationSensorFragment.createInstance("渡したい文字列"))
@@ -47,112 +26,12 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             transaction.add(R.id.OrientationContainer, OrientationFragment.createInstance("渡したい文字列"))
             transaction.commit()
         }
+        */
 
 
         supportActionBar!!.hide()
-        beaconManager = BeaconManager.getInstanceForApplication(this)
-        beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
-        listView = findViewById(R.id.listview)
-        arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
-        listView.adapter = arrayAdapter
 
-        Realm.init(this)
-
-        /* 画像を表示するfragmentを追加します(雑)
-        supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()
-        */
-    }
-
-    override fun onResume() {
-        super.onResume()
-        beaconManager.bind(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        beaconManager.unbind(this)
-    }
-
-    override fun onBeaconServiceConnect() {
-        mRegion = Region("iBeacon", null, null, null)
-        beaconManager.addMonitorNotifier(object : MonitorNotifier {
-            override fun didEnterRegion(region: Region) {
-                //領域への入場を検知
-                state = "Enter Region"
-            }
-
-            override fun didExitRegion(region: Region) {
-                //領域からの退場を検知
-                state = "Exit Region"
-            }
-
-            override fun didDetermineStateForRegion(i: Int, region: Region) {
-                //領域への入退場のステータス変化を検知
-                state = "Determine State$i"
-            }
-
-        })
-        try {
-            //Beacon情報の監視を開始
-            beaconManager.startMonitoringBeaconsInRegion(mRegion)
-        } catch (e: RemoteException) {
-            e.printStackTrace()
-        }
-
-        beaconManager.addRangeNotifier { beacons, _ ->
-
-            //検出したBeaconの情報を全て出力
-            for (beacon in beacons) {
-                realm = Realm.getDefaultInstance()
-                var id: Int = try {
-                    realm.where(BeaconModel::class.java).findAll().size + 1
-                } catch (e: Exception) {
-                    1
-                }
-                val currentBeacon = BeaconModel(
-                    id,
-                    beacon.id1.toString(),
-                    beacon.id2.toString(),
-                    beacon.rssi,
-                    SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(Calendar.getInstance().time)
-                )
-                realm.executeTransaction {
-                    val model = realm.createObject(BeaconModel::class.java!!, id)
-                    model.major = currentBeacon.major
-                    model.minor = currentBeacon.minor
-                    model.rssi = currentBeacon.rssi
-                    model.receivedTime = currentBeacon.receivedTime
-                    realm.copyToRealm(model)
-                }
-                realm.where(BeaconModel::class.java).findAll().forEach { Log.e("got", it.toString()) }
-
-                data.add(
-                    0,
-                    "${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}"
-                )
-                realm.close()
-            }
-            runOnUiThread {
-                arrayAdapter.notifyDataSetChanged()
-            }
-        }
-        try {
-            beaconManager.startRangingBeaconsInRegion(mRegion)
-        } catch (e: RemoteException) {
-            e.printStackTrace()
-        }
-
-    }
-
-    // 試験用(削除予定)
-    override fun onStop() {
-
-        realm = Realm.getDefaultInstance()
-        realm.beginTransaction()
-        realm.delete(BeaconModel::class.java)
-        realm.commitTransaction()
-        realm.close()
-
-        super.onStop()
+        // 画像を表示するfragmentを追加します(雑)
+        //supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()
     }
 }

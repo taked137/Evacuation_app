@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="beacon" type="take.dic.sensorapp.beacon.BeaconValue"/>
+    </data>
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" >
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gps_container"
+                android:layout_toLeftOf="@+id/center"
+        >
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/acceleration_container"
+                android:layout_toRightOf="@+id/center"
+                >
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gyro_container"
+                android:layout_toRightOf="@+id/center"
+                android:layout_below="@+id/center"
+                android:layout_marginTop="-145dp"
+        >
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/orientation_container"
+                android:layout_toLeftOf="@+id/center"
+                android:layout_below="@+id/center"
+                android:layout_marginTop="-200dp"
+        >
+        </RelativeLayout>
+
+        <!--2分割する為のダミーView-->
+        <View
+                android:id="@+id/center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+        <!--得られたビーコン情報を入れるリスト-->
+        <take.dic.sensorapp.beacon.BindingListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/center"
+                android:layout_marginTop="30dp"
+                app:list="@{beacon.list}"/>
+
+    </RelativeLayout>
+</layout>
