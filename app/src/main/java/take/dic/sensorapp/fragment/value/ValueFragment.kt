@@ -1,4 +1,4 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.fragment.value
 
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
@@ -14,24 +14,20 @@ import android.view.View
 import android.view.ViewGroup
 import io.realm.Realm
 import org.altbeacon.beacon.*
-import take.dic.sensorapp.acceleration.AccelerationSensorFragment
-import take.dic.sensorapp.angular.AngularValue
-import take.dic.sensorapp.beacon.BeaconModel
-import take.dic.sensorapp.beacon.BeaconValue
+import take.dic.sensorapp.R
+import take.dic.sensorapp.fragment.value.acceleration.AccelerationSensorFragment
+import take.dic.sensorapp.fragment.value.beacon.BeaconModel
+import take.dic.sensorapp.fragment.value.beacon.BeaconValue
 import take.dic.sensorapp.databinding.FragmentValueBinding
-import take.dic.sensorapp.gps.GPSFragment
-import take.dic.sensorapp.gyro.GyroSensorFragment
-import take.dic.sensorapp.orientation.OrientationFragment
+import take.dic.sensorapp.fragment.value.gps.GPSFragment
+import take.dic.sensorapp.fragment.value.gyro.GyroSensorFragment
+import take.dic.sensorapp.fragment.value.orientation.OrientationFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ValueFragment : Fragment(), BeaconConsumer {
 
     val REQUEST_ENABLE_BLUETOOTH = 4
-    //private val gps = GPSData(title = "GPS", latitude = "緯度", longitude = "経度")
-    //private val acceleration = AccelerationData(title = "加速度", x = "x軸", y = "y軸", z = "z軸")
-    //private val angular = AngularValue(title = "角速度", x = "x軸", y = "y軸", z = "z軸")
-    //private val orientation = OrientationValue(title = "方位", x = "x軸", y = "y軸", z = "z軸")
     private val mBeacon = BeaconValue()
     private var state = ""
     private lateinit var mRegion: Region
@@ -47,10 +43,6 @@ class ValueFragment : Fragment(), BeaconConsumer {
         val binding = FragmentValueBinding.inflate(inflater, container, false)
 
         setBluetooth()
-        //binding.gps = gps
-        //binding.acceleration = acceleration
-        //binding.angular = angular
-        //binding.orientation = orientation
         binding.beacon = mBeacon
 
         beaconManager = BeaconManager.getInstanceForApplication(activity!!)

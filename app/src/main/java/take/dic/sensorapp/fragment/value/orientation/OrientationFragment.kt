@@ -1,4 +1,4 @@
-package take.dic.sensorapp.orientation
+package take.dic.sensorapp.fragment.value.orientation
 
 import android.content.Context
 import android.hardware.Sensor
@@ -12,15 +12,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_orientation.*
-import take.dic.sensorapp.BaseBindingFragment
+import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentOrientationBinding
 
 
 class OrientationFragment : BaseBindingFragment() , SensorEventListener {
 
-    private var sensorManager: SensorManager? = null
+    private lateinit var sensorManager: SensorManager
     private val orientation = OrientationData(title = "方位", x = "", y = "", z = "")
 
     /** 行列数  */
@@ -28,11 +27,11 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
     /** 三次元(XYZ)  */
     private val DIMENSION = 3
     /** センサー管理クラス  */
-    private val mManager: SensorManager? = null
+    private lateinit var mManager: SensorManager
     /** 地磁気行列  */
-    private var mMagneticValues: FloatArray? = null
+    private lateinit var mMagneticValues: FloatArray
     /** 加速度行列  */
-    private var mAccelerometerValues: FloatArray? = null
+    private lateinit var mAccelerometerValues: FloatArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,21 +43,17 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
     override fun onResume() {
         super.onResume()
 
-        val magnet = sensorManager!!.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-        val accel = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED)
-
-        if (sensorManager == null) {
-            sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        }
+        val magnet = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+        val accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED)
 
         if (magnet != null) {
-            sensorManager!!.registerListener(this, magnet, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(this, magnet, SensorManager.SENSOR_DELAY_NORMAL)
         } else {
             Toast.makeText(context, "磁気センサーが存在しません", Toast.LENGTH_LONG).show()
         }
 
         if (accel != null) {
-            sensorManager!!.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL)
         } else {
             Toast.makeText(context, "加速度センサーが存在しません", Toast.LENGTH_LONG).show()
         }
@@ -70,7 +65,6 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         super.onCreateView(inflater, container, savedInstanceState)
         val binding = bind<FragmentOrientationBinding>(inflater, container, R.layout.fragment_orientation)
         binding.orientation = orientation
@@ -82,7 +76,7 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
     override fun onPause() {
         super.onPause()
         // Listenerを解除
-        sensorManager!!.unregisterListener(this)
+        sensorManager.unregisterListener(this)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -99,7 +93,7 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
                 // それ以外は無視
                 return
         }
-        if (mMagneticValues != null && mAccelerometerValues != null) {
+        if (this::mMagneticValues.isInitialized && this::mAccelerometerValues.isInitialized) {
             val rotationMatrix = FloatArray(MATRIX_SIZE)
             val inclinationMatrix = FloatArray(MATRIX_SIZE)
             val remapedMatrix = FloatArray(MATRIX_SIZE)

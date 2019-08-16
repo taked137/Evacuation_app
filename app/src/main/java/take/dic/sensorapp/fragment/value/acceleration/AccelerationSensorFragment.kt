@@ -1,4 +1,4 @@
-package take.dic.sensorapp.acceleration
+package take.dic.sensorapp.fragment.value.acceleration
 
 import android.content.Context
 import android.hardware.Sensor
@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import take.dic.sensorapp.BaseBindingFragment
+import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentAccelerationBinding
 

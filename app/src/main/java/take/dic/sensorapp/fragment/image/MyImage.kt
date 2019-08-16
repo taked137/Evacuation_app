@@ -1,4 +1,4 @@
-package take.dic.sensorapp.image
+package take.dic.sensorapp.fragment.image
 
 import android.databinding.BindingAdapter
 import android.widget.ImageView

@@ -1,4 +1,4 @@
-package take.dic.sensorapp.acceleration
+package take.dic.sensorapp.fragment.value.acceleration
 
 import android.databinding.ObservableField
 

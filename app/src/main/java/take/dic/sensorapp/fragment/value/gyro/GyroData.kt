@@ -1,8 +1,8 @@
-package take.dic.sensorapp.orientation
+package take.dic.sensorapp.fragment.value.gyro
 
 import android.databinding.ObservableField
 
-data class OrientationData(val title: String, val x: String, val y: String, val z: String) {
+data class GyroData(val title: String, val x: String, val y: String, val z: String) {
     var titleWord = ObservableField(title)
     var xValue = ObservableField(x)
     var yValue = ObservableField(y)

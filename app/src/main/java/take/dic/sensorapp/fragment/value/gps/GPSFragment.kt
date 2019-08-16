@@ -1,4 +1,4 @@
-package take.dic.sensorapp.gps
+package take.dic.sensorapp.fragment.value.gps
 
 import android.Manifest
 import android.content.Context

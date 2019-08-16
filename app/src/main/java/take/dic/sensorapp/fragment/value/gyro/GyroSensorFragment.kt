@@ -1,4 +1,4 @@
-package take.dic.sensorapp.gyro
+package take.dic.sensorapp.fragment.value.gyro
 
 import android.content.Context
 import android.hardware.Sensor
@@ -10,16 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_gyro.*
-import take.dic.sensorapp.BaseBindingFragment
+import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentGyroBinding
 
 
-class GyroSensorFragment : BaseBindingFragment() , SensorEventListener {
+class GyroSensorFragment : BaseBindingFragment(), SensorEventListener {
 
-    private var testStr: String? = null //MainActivityから受け取る文字列(何かあれば)
-    private var sensorManager: SensorManager? = null
+    private lateinit var sensorManager: SensorManager
     private val gyro = GyroData(title = "角速度", x = "", y = "", z = "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +33,7 @@ class GyroSensorFragment : BaseBindingFragment() , SensorEventListener {
         // Listenerの登録 下の二つのgyroのうちのどちらかのコメントアウトを外す
 
         // ジャイロドリフトの補正があるセンサー出力です。
-        val gyro = sensorManager!!.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        val gyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
 
         /*ジャイロドリフトの補正がないセンサー出力です。ジャイロドリフトの補正がないと放置しておくとバイアスがかかったよ
           うに徐々にずれていきます。 　
@@ -44,7 +42,7 @@ class GyroSensorFragment : BaseBindingFragment() , SensorEventListener {
         //val gyro = sensorManager!!.getDefaultSensor(Sensor.TYPE_GYROSCOPE_UNCALIBRATED)
 
         if (gyro != null) {
-            sensorManager!!.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
             // SensorManager.SENSOR_DELAY_NORMALの部分を変えれば周期が変えれる
             // 100000000くらいにすれば見やすいかも
         } else {
@@ -65,7 +63,7 @@ class GyroSensorFragment : BaseBindingFragment() , SensorEventListener {
     override fun onPause() {
         super.onPause()
         // Listenerを解除
-        sensorManager!!.unregisterListener(this)
+        sensorManager.unregisterListener(this)
     }
 
     override fun onSensorChanged(event: SensorEvent) {

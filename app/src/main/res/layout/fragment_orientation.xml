@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="orientation" type="take.dic.sensorapp.orientation.OrientationData"/>
+        <variable name="orientation" type="take.dic.sensorapp.fragment.value.orientation.OrientationData"/>
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.fragment.value.base
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
@@ -16,6 +16,6 @@ abstract class BaseBindingFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding?.unbind()
+        binding.unbind()
     }
 }

@@ -1,8 +1,8 @@
-package take.dic.sensorapp
+package take.dic.sensorapp.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import take.dic.sensorapp.image.ImageFragment
+import take.dic.sensorapp.R
 
 class MainActivity : AppCompatActivity() {
 

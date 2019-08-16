@@ -5,6 +5,6 @@
 
     <fragment
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:name="take.dic.sensorapp.ValueFragment"
+            android:layout_height="match_parent" android:name="take.dic.sensorapp.fragment.value.ValueFragment"
             tools:layout_editor_absoluteY="310dp" tools:layout_editor_absoluteX="163dp" android:id="@+id/fragment"/>
 </RelativeLayout>

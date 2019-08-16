@@ -1,4 +1,4 @@
-package take.dic.sensorapp.image
+package take.dic.sensorapp.fragment.image
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
