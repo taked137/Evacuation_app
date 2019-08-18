@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey
 
 open class BeaconModel(
     @PrimaryKey
-    var id: Int = 0,
+    var id: String = "",
     var major: String = "",
     var minor: String = "",
     var rssi: Int = 0,
