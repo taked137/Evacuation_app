@@ -22,7 +22,7 @@ import take.dic.sensorapp.databinding.FragmentGpsBinding
 class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
     private lateinit var locationManager: LocationManager
-    private val gps = GPSData(title = "GPS", latitude = "", longitude = "")
+    private val gps = GPSData(title = "GPS", latitude = "", longitude = "", altitude = "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,8 +130,10 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
 
     override fun onLocationChanged(location: Location) {
-        gps.longitudeValue.set(location.longitude.toString())
-        gps.latitudeValue.set(location.latitude.toString())
+        // レイアウトが崩れる可能性があるため表示桁数を制限
+        gps.longitudeValue.set("%.11s".format(location.longitude))
+        gps.latitudeValue.set("%.11s".format(location.latitude))
+        gps.altitudeValue.set("%.11s".format(location.altitude))
     }
 
     override fun onProviderEnabled(provider: String) {

@@ -29,5 +29,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/longitude"/>
 
+        <TextView
+                android:id="@+id/altitude"
+                android:textSize="17dp"
+                android:text="@{gps.altitudeValue}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/latitude"/>
+
     </RelativeLayout>
 </layout>
