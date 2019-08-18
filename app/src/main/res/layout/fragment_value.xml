@@ -1,62 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable name="beacon" type="take.dic.sensorapp.fragment.value.beacon.BeaconValue"/>
-    </data>
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gps_container"
-                android:layout_toLeftOf="@+id/center"
-        >
-        </RelativeLayout>
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/acceleration_container"
-                android:layout_toRightOf="@+id/center"
-        >
-        </RelativeLayout>
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gyro_container"
-                android:layout_toRightOf="@+id/center"
-                android:layout_below="@+id/acceleration_container"
-                android:layout_marginTop="-420dp"
-        >
-        </RelativeLayout>
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/orientation_container"
-                android:layout_toLeftOf="@+id/center"
-                android:layout_below="@+id/acceleration_container"
-                android:layout_marginTop="-420dp"
-        >
-        </RelativeLayout>
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/beacon_container"
-                android:layout_below="@+id/center"
-        >
-        </RelativeLayout>
-
-        <!--2分割する為のダミーView-->
-        <View
-                android:id="@+id/center"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
-
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gps_container"
+            android:layout_toLeftOf="@+id/center"
+    >
     </RelativeLayout>
-</layout>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/acceleration_container"
+            android:layout_toRightOf="@+id/center"
+    >
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gyro_container"
+            android:layout_toRightOf="@+id/center"
+            android:layout_below="@+id/acceleration_container"
+            android:layout_marginTop="-420dp"
+    >
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orientation_container"
+            android:layout_toLeftOf="@+id/center"
+            android:layout_below="@+id/acceleration_container"
+            android:layout_marginTop="-420dp"
+    >
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/beacon_container"
+            android:layout_below="@+id/center"
+    >
+    </RelativeLayout>
+
+    <!--2分割する為のダミーView-->
+    <View
+            android:id="@+id/center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+</RelativeLayout>

@@ -4,36 +4,32 @@
         <variable name="gyro" type="take.dic.sensorapp.fragment.value.gyro.GyroData"/>
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:orientation="vertical">
 
         <TextView
-                android:id="@+id/title"
                 android:text="@{gyro.title}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"/>
+
         <TextView
-                android:id="@+id/x"
                 android:text="@{gyro.XValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
                 android:textSize="17dp"/>
+
         <TextView
-                android:id="@+id/y"
                 android:text="@{gyro.YValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/x"
                 android:textSize="17dp"/>
+
         <TextView
-                android:id="@+id/z"
                 android:text="@{gyro.ZValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/y"
                 android:textSize="17dp"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 </layout>

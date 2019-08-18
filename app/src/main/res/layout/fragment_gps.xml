@@ -3,39 +3,32 @@
     <data>
         <variable name="gps" type="take.dic.sensorapp.fragment.value.gps.GPSData"/>
     </data>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:orientation="vertical">
 
         <TextView
-                android:id="@+id/title"
                 android:text="@{gps.titleWord}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"/>
 
         <TextView
-                android:id="@+id/longitude"
                 android:text="@{gps.longitudeValue}"
                 android:textSize="17dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title"/>
+                android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/latitude"
                 android:textSize="17dp"
                 android:text="@{gps.latitudeValue}"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/longitude"/>
+                android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/altitude"
                 android:textSize="17dp"
                 android:text="@{gps.altitudeValue}"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/latitude"/>
+                android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 </layout>
