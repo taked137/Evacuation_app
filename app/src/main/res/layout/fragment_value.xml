@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/gyro_container"
                 android:layout_toRightOf="@+id/center"
-                android:layout_below="@+id/center"
-                android:layout_marginTop="-145dp"
+                android:layout_below="@+id/acceleration_container"
+                android:layout_marginTop="-420dp"
         >
         </RelativeLayout>
 
@@ -37,8 +37,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/orientation_container"
                 android:layout_toLeftOf="@+id/center"
-                android:layout_below="@+id/center"
-                android:layout_marginTop="-200dp"
+                android:layout_below="@+id/acceleration_container"
+                android:layout_marginTop="-420dp"
         >
         </RelativeLayout>
 
