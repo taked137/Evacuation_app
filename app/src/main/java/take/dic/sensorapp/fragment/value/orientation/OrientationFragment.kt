@@ -17,7 +17,7 @@ import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentOrientationBinding
 
-
+// TODO: 加速度センサーの種類決定
 class OrientationFragment : BaseBindingFragment() , SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
@@ -45,7 +45,7 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
         super.onResume()
 
         val magnet = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-        val accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED)
+        val accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)//_UNCALIBRATED)
 
         if (magnet != null) {
             sensorManager.registerListener(this, magnet, SensorManager.SENSOR_DELAY_NORMAL)
@@ -87,7 +87,7 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
             Sensor.TYPE_MAGNETIC_FIELD ->
                 // 地磁気センサー
                 mMagneticValues = event.values.clone()
-            Sensor.TYPE_ACCELEROMETER_UNCALIBRATED ->
+            Sensor.TYPE_ACCELEROMETER -> //_UNCALIBRATED ->
                 // 加速度センサー
                 mAccelerometerValues = event.values.clone()
             else ->
