@@ -110,7 +110,7 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
                     SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS z").format(Calendar.getInstance().time)
                 )
                 realm.executeTransaction {
-                    val model = realm.createObject(BeaconModel::class.java, id)
+                    val model = realm.createObject(BeaconModel::class.java, currentBeacon.id)
                     model.major = currentBeacon.major
                     model.minor = currentBeacon.minor
                     model.rssi = currentBeacon.rssi
