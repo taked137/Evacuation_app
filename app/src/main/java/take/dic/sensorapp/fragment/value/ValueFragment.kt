@@ -25,6 +25,6 @@ class ValueFragment : Fragment() {
         transaction.add(R.id.beacon_container, BeaconFragment())
         transaction.commit()
 
-        return inflater.inflate(R.layout.fragment_value, container, false);
+        return inflater.inflate(R.layout.fragment_value, container, false)
     }
 }
