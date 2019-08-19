@@ -132,7 +132,7 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
     private fun pushBeaconModel(element: String) {
         activity!!.runOnUiThread {
-            mBeacon.list.add(0, element)
+            mBeacon.list.add(element)
         }
     }
 
