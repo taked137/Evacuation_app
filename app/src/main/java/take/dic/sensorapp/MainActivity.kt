@@ -14,6 +14,10 @@ class MainActivity : AppCompatActivity() {
 
         // 画像を表示するfragmentを追加します(雑)
         //supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()
-        supportFragmentManager.beginTransaction().add(R.id.container, ValueFragment()).commit()
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().replace(R.id.container, ValueFragment()).commit()
+        }
+
     }
 }
