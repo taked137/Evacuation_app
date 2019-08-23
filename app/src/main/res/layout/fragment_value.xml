@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="gps" type="take.dic.sensorapp.gps.GPSValue"/>
+        <variable name="acceleration" type="take.dic.sensorapp.Motion"/>
+        <variable name="angular" type="take.dic.sensorapp.Motion"/>
+        <variable name="orientation" type="take.dic.sensorapp.Motion"/>
+        <variable name="beacon" type="take.dic.sensorapp.beacon.BeaconValue"/>
+    </data>
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="16dp">
+
+        <!--2分割する為のダミーView-->
+        <View
+                android:id="@+id/center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+        <!--GPSについてのテキスト-->
+        <TextView
+                android:id="@+id/GPS"
+                android:text="@{gps.title}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:layout_marginLeft="20dp"/>
+        <TextView
+                android:id="@+id/GPSX"
+                android:text="@{gps.latitude}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GPS"
+                android:textSize="17dp"/>
+
+        <TextView
+                android:id="@+id/GPSY"
+                android:text="@{gps.longitude}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GPSX"
+                android:textSize="17dp"/>
+
+        <TextView
+                android:id="@+id/GPSA"
+                android:text="@{gps.altitude}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GPSY"
+                android:textSize="17dp"/>
+
+        <!--加速度についてのテキスト-->
+        <TextView
+                android:id="@+id/Acceleration"
+                android:text="@{acceleration.title}"
+                android:layout_toRightOf="@+id/center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp" android:layout_marginLeft="20dp"/>
+        <TextView
+                android:id="@+id/AccelerationX"
+                android:text="@{acceleration.x}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Acceleration"
+                android:layout_toRightOf="@+id/center"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/AccelerationY"
+                android:text="@{acceleration.y}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AccelerationX"
+                android:layout_toRightOf="@+id/center"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/AccelerationZ"
+                android:text="@{acceleration.z}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AccelerationY"
+                android:layout_toRightOf="@+id/center"
+                android:textSize="17dp"/>
+
+        <!--角速度についてのテキスト-->
+        <TextView
+                android:id="@+id/Angular"
+                android:text="@{angular.title}"
+                android:layout_below="@+id/Acceleration"
+                android:layout_toRightOf="@+id/center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="90dp"/>
+        <TextView
+                android:id="@+id/AngularX"
+                android:text="@{angular.x}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Angular"
+                android:layout_toRightOf="@+id/center"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/AngularY"
+                android:text="@{angular.y}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AngularX"
+                android:layout_toRightOf="@+id/center"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/AngularZ"
+                android:text="@{angular.z}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AngularY"
+                android:layout_toRightOf="@+id/center"
+                android:textSize="17dp"/>
+
+        <!--方位についてのテキスト-->
+        <TextView
+                android:id="@+id/Orientation"
+                android:text="@{orientation.title}"
+                android:layout_below="@+id/GPS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="90dp"/>
+        <TextView
+                android:id="@+id/OrientationX"
+                android:text="@{orientation.x}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Orientation"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/OrientationY"
+                android:text="@{orientation.y}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/OrientationX"
+                android:textSize="17dp"/>
+        <TextView
+                android:id="@+id/OrientationZ"
+                android:text="@{orientation.z}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/OrientationY"
+                android:textSize="17dp"/>
+
+        <!--得られたビーコン情報を入れるリスト-->
+        <take.dic.sensorapp.beacon.BindingListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/center"
+                android:layout_marginTop="30dp"
+                app:list="@{beacon.list}"/>
+
+    </RelativeLayout>
+</layout>
