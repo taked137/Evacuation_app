@@ -15,11 +15,10 @@ open class Motion(val title : String) {
 
     var isUpdate: Boolean = false
 
-    fun setResult(x : Float, y : Float, z : Float) {
-        newX = x
-        newY = y
-        newZ = z
-        this.x.set(newX.toString())
+    fun setResult(newX : Float, newY : Float, newZ : Float) {
+        this.newX = newX
+        this.newY = newY
+        this.newZ = newZ
         isUpdate = true
     }
 
