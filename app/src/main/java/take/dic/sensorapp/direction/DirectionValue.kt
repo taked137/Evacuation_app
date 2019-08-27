@@ -1,13 +1,13 @@
+package take.dic.sensorapp.direction
 
 import android.databinding.ObservableField
-
 
 /*
 このクラスは使っていない。代わりにMotionを使用している
 Motionをabstractにしてこれに継承させるかも
  */
 
-class AccelerationValue {
+class DirectionValue(val title : String) {
     val x: ObservableField<String> = ObservableField("")
     val y: ObservableField<String> = ObservableField("")
     val z: ObservableField<String> = ObservableField("")

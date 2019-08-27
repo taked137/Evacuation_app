@@ -1,17 +1,12 @@
-package take.dic.sensorapp.orientation
+package take.dic.sensorapp.gyro
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
 import android.databinding.ObservableField
-import android.databinding.ObservableFloat
-import take.dic.sensorapp.BR
 
 /*
 このクラスは使っていない。代わりにMotionを使用している
 Motionをabstractにしてこれに継承させるかも
  */
-
-class OrientationValue(val title : String) {
+class GyroValue(val title : String) {
     val x: ObservableField<String> = ObservableField("")
     val y: ObservableField<String> = ObservableField("")
     val z: ObservableField<String> = ObservableField("")
@@ -26,6 +21,7 @@ class OrientationValue(val title : String) {
         newX = x
         newY = y
         newZ = z
+        this.x.set(newX.toString())
         isUpdate = true
     }
 

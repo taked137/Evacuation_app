@@ -1,8 +1,8 @@
 package take.dic.sensorapp
 
-import take.dic.sensorapp.Acceleration.AccelerationValue
-import take.dic.sensorapp.angular.AngularValue
-import take.dic.sensorapp.orientation.OrientationValue
+import take.dic.sensorapp.acceleration.AccelerationValue
+import take.dic.sensorapp.direction.DirectionValue
+import take.dic.sensorapp.gyro.GyroValue
 
 
 class MotionValue {
@@ -11,9 +11,10 @@ class MotionValue {
     var motions : MutableList<Motion?> = mutableListOf(Motion("加速度"), Motion("角速度"), Motion("方位"))
 
     //motionsの代わりにこっちを使うかも
+
     /*var acceleration = AccelerationValue("")
-    var angular = AngularValue("")
-    var orient = OrientationValue("")*/
+    var gyro = GyroValue("")
+    var direction = DirectionValue("")*/
 
 
     //センサーが存在する加速度・角速度・方位情報について、すべてが新しい値を取得していたら更新

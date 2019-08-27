@@ -1,16 +1,15 @@
-package take.dic.sensorapp.angular
+package take.dic.sensorapp.acceleration
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
+
 import android.databinding.ObservableField
-import android.databinding.ObservableFloat
-import take.dic.sensorapp.BR
+
 
 /*
 このクラスは使っていない。代わりにMotionを使用している
 Motionをabstractにしてこれに継承させるかも
  */
-class AngularValue(val title : String) {
+
+class AccelerationValue (val title : String) {
     val x: ObservableField<String> = ObservableField("")
     val y: ObservableField<String> = ObservableField("")
     val z: ObservableField<String> = ObservableField("")
@@ -25,7 +24,6 @@ class AngularValue(val title : String) {
         newX = x
         newY = y
         newZ = z
-        this.x.set(newX.toString())
         isUpdate = true
     }
 

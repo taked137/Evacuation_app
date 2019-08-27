@@ -85,7 +85,7 @@
 
         <!--角速度についてのテキスト-->
         <TextView
-                android:id="@+id/Angular"
+                android:id="@+id/Gyro"
                 android:text="@{angular.title}"
                 android:layout_below="@+id/Acceleration"
                 android:layout_toRightOf="@+id/center"
@@ -95,33 +95,33 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="90dp"/>
         <TextView
-                android:id="@+id/AngularX"
+                android:id="@+id/GyroX"
                 android:text="@{angular.x}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/Angular"
+                android:layout_below="@+id/Gyro"
                 android:layout_toRightOf="@+id/center"
                 android:textSize="17dp"/>
         <TextView
-                android:id="@+id/AngularY"
+                android:id="@+id/GyroY"
                 android:text="@{angular.y}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/AngularX"
+                android:layout_below="@+id/GyroX"
                 android:layout_toRightOf="@+id/center"
                 android:textSize="17dp"/>
         <TextView
-                android:id="@+id/AngularZ"
+                android:id="@+id/GyroZ"
                 android:text="@{angular.z}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/AngularY"
+                android:layout_below="@+id/GyroY"
                 android:layout_toRightOf="@+id/center"
                 android:textSize="17dp"/>
 
         <!--方位についてのテキスト-->
         <TextView
-                android:id="@+id/Orientation"
+                android:id="@+id/Direction"
                 android:text="@{orientation.title}"
                 android:layout_below="@+id/GPS"
                 android:layout_width="wrap_content"
@@ -130,30 +130,30 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="90dp"/>
         <TextView
-                android:id="@+id/OrientationX"
+                android:id="@+id/DirectionX"
                 android:text="@{orientation.x}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/Orientation"
+                android:layout_below="@+id/Direction"
                 android:textSize="17dp"/>
         <TextView
-                android:id="@+id/OrientationY"
+                android:id="@+id/DirectionY"
                 android:text="@{orientation.y}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/OrientationX"
+                android:layout_below="@+id/DirectionX"
                 android:textSize="17dp"/>
         <TextView
-                android:id="@+id/OrientationZ"
+                android:id="@+id/DirectionZ"
                 android:text="@{orientation.z}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/OrientationY"
+                android:layout_below="@+id/DirectionY"
                 android:textSize="17dp"/>
 
         <!--得られたビーコン情報を入れるリスト-->
         <take.dic.sensorapp.beacon.BindingListView
-                android:id="@+id/listview"
+                android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/center"
