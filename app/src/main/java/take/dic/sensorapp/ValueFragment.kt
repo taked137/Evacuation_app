@@ -1,6 +1,7 @@
 package take.dic.sensorapp
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -15,6 +16,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.location.LocationProvider
+import android.os.Build
 import android.os.Bundle
 import android.os.RemoteException
 import android.provider.Settings
@@ -46,19 +48,20 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
     private lateinit var mRegion: Region
     private lateinit var realm: Realm
 
-
     private var sensorManager: SensorManager? = null
-    /** 行列数  */
+    // 行列数
     private val MATRIX_SIZE = 16
-    /** 三次元(XYZ)  */
+    // 三次元(XYZ)
     private val DIMENSION = 3
-    /** センサー管理クラス  */
-    /** 地磁気行列  */
+
+    // 地磁気行列
     private var mMagneticValues: FloatArray? = null
-    /** 加速度行列  */
+    // 加速度行列
     private var mAccelerometerValues: FloatArray? = null
 
     private var locationManager: LocationManager? = null
+
+    private var vContext : Context? = null
 
     //iBeacon認識のためのフォーマット設定
     private val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
@@ -68,107 +71,19 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (ContextCompat.checkSelfPermission(
-                context!!,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                activity!!,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                1000
-            )
-        } else {
+        vContext = context
+
+        if (Build.VERSION.SDK_INT < 23 || checkPermission()) {
             locationStart()
 
             locationManager!!.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                1000, 50f, this
+                1000,
+                50f,
+                this
             )
-
         }
     }
-
-    private fun locationStart() {
-
-        Log.d("debug", "locationStart()")
-
-        // LocationManager インスタンス生成
-        locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        if (locationManager != null && locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.d("debug", "location manager Enabled")
-        } else {
-            // GPSを設定するように促す
-            val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivity(settingsIntent)
-            Log.d("debug", "not gpsEnable, startActivity")
-        }
-
-        if (ContextCompat.checkSelfPermission(
-                context!!,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                activity!!,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1000
-            )
-
-            Log.d("debug", "checkSelfPermission false")
-            return
-        }
-
-        locationManager!!.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            1000, 50f, this
-        )
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
-    ) {
-        if (requestCode == 1000) {
-            // 使用が許可された
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("debug", "checkSelfPermission true")
-                locationStart()
-
-            } else {
-                // それでも拒否された時の対応
-                val toast = Toast.makeText(
-                    context!!,
-                    "拒否されました",
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
-            }
-        }
-    }
-
-
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-        when (status) {
-            LocationProvider.AVAILABLE -> Log.d("debug", "LocationProvider.AVAILABLE")
-            LocationProvider.OUT_OF_SERVICE -> Log.d("debug", "LocationProvider.OUT_OF_SERVICE")
-            LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE")
-        }
-    }
-
-
-    override fun onLocationChanged(location: Location) {
-        gps.setResult(location.latitude.toFloat(),location.longitude.toFloat(),location.altitude.toFloat())
-    }
-
-    override fun onProviderEnabled(provider: String) {
-
-    }
-
-    override fun onProviderDisabled(provider: String) {
-
-    }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentValueBinding.inflate(inflater, container, false)
@@ -180,11 +95,6 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
         binding.acceleration = motionValue.motions[0]
         binding.angular = motionValue.motions[1]
         binding.orientation = motionValue.motions[2]
-
-        /*binding.acceleration = acceleration
-        binding.angular = angular
-        binding.orientation = orientation*/
-
 
         binding.beacon = mBeacon
 
@@ -220,7 +130,6 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
         if (sensorManager == null) {
             sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         }
-
 
         if (accelSensor != null) {
             sensorManager!!.registerListener(this, accelSensor, SensorManager.SENSOR_DELAY_NORMAL)
@@ -265,22 +174,27 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
     }
 
 
+    /*取得したデータの種類に応じてmotionValue.motions内の加速度・角速度・方位データを(一時的に)保存
+    同時更新じたいのでmotionValue.updateData()を最後にする*/
     override fun onSensorChanged(event: SensorEvent) {
 
+        //加速度センサー
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             if(motionValue.motions[0] != null) { //
                 motionValue.motions[0]!!.setResult(event.values[0], event.values[1], event.values[2])
                 mAccelerometerValues = event.values.clone()
             }
-
+        //角速度センサー
         } else if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
              if(motionValue.motions[1] != null) {
                  motionValue.motions[1]!!.setResult(event.values[0], event.values[1], event.values[2])
              }
+        //磁気センサー
         } else {
             mMagneticValues = event.values.clone()
         }
 
+        //加速度・磁気データから方位をデータを取得
         if (mMagneticValues != null && mAccelerometerValues != null) {
             val rotationMatrix = FloatArray(MATRIX_SIZE)
             val inclinationMatrix = FloatArray(MATRIX_SIZE)
@@ -296,15 +210,12 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
             )
             SensorManager.getOrientation(remapedMatrix, orientationValues)
 
-
-
             if(motionValue.motions[2] != null) {
                 motionValue.motions[2]!!.setResult(
                     radianToDegrees(orientationValues[0]),
                     radianToDegrees(orientationValues[1]),
                     radianToDegrees(orientationValues[2])
                 )
-
             }
 
         }
@@ -313,16 +224,107 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener , Location
     }
 
     private fun radianToDegrees(angrad : Float) : Float{
-        if (angrad >= 0 ) {
-            return Math.toDegrees(angrad.toDouble()).toFloat()
+        return if (angrad >= 0 ) {
+            Math.toDegrees(angrad.toDouble()).toFloat()
         } else {
-            return (360 + Math.toDegrees(angrad.toDouble())).toFloat()
+            (360 + Math.toDegrees(angrad.toDouble())).toFloat()
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
     }
+
+
+    // GPS用のメソッド群
+
+    private fun locationStart() {
+
+        Log.d("debug", "locationStart()")
+
+        // LocationManager インスタンス生成
+        locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if (locationManager != null && locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.d("debug", "location manager Enabled")
+        } else {
+            // GPSを設定するように促す
+            val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(settingsIntent)
+            Log.d("debug", "not gpsEnable, startActivity")
+        }
+
+
+        if (!checkPermission()) {
+            Log.d("debug", "checkSelfPermission false")
+            return
+        }
+
+        locationManager!!.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            1000, 50f, this
+        )
+
+    }
+
+    //使用可能かどうかの判定。trueなら可能、falseなら不可能、許可を申請する
+    private fun checkPermission() : Boolean {
+        val judge = ( ContextCompat.checkSelfPermission(vContext!!, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+
+        return if (judge) {
+            true
+        } else {
+            ActivityCompat.requestPermissions(
+                activity!!,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1000)
+            false
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        if (requestCode == 1000) {
+            // 使用が許可された
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("debug", "checkSelfPermission true")
+                locationStart()
+
+            } else {
+                // それでも拒否された時の対応
+                Toast.makeText(context!!, "GPS機能は作動しません", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+        when (status) {
+            LocationProvider.AVAILABLE -> Log.d("debug", "LocationProvider.AVAILABLE")
+            LocationProvider.OUT_OF_SERVICE -> Log.d("debug", "LocationProvider.OUT_OF_SERVICE")
+            LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE")
+        }
+    }
+
+
+    override fun onLocationChanged(location: Location) {
+        gps.setResult(location.latitude.toFloat(),location.longitude.toFloat(),location.altitude.toFloat())
+
+        if(checkPermission()) {
+            locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                1000, 50f, this)
+        }
+        //位置情報更新
+
+        //locationStart()
+    }
+
+    override fun onProviderEnabled(provider: String) {}
+    override fun onProviderDisabled(provider: String) {}
+
+
+
+
 
     override fun onBeaconServiceConnect() {
         mRegion = Region("iBeacon", null, null, null)
