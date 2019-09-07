@@ -60,6 +60,7 @@ class AccelerationSensorFragment : BaseBindingFragment(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+            acceleration.unixTime.set(System.currentTimeMillis().toString())
             acceleration.xValue.set(event.values[0].toString())
             acceleration.yValue.set(event.values[1].toString())
             acceleration.zValue.set(event.values[2].toString())

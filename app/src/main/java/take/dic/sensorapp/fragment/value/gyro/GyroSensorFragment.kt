@@ -68,11 +68,8 @@ class GyroSensorFragment : BaseBindingFragment(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
 
-        if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
-            gyro.xValue.set(event.values[0].toString())
-            gyro.yValue.set(event.values[1].toString())
-            gyro.zValue.set(event.values[2].toString())
-        } else if (event.sensor.type == Sensor.TYPE_GYROSCOPE_UNCALIBRATED) {
+        if (event.sensor.type == Sensor.TYPE_GYROSCOPE || event.sensor.type == Sensor.TYPE_GYROSCOPE_UNCALIBRATED) {
+            gyro.unixTime.set(System.currentTimeMillis().toString())
             gyro.xValue.set(event.values[0].toString())
             gyro.yValue.set(event.values[1].toString())
             gyro.zValue.set(event.values[2].toString())

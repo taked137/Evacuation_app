@@ -9,5 +9,6 @@ open class BeaconModel(
     var major: String = "",
     var minor: String = "",
     var rssi: Int = 0,
-    var receivedTime: String = ""
+    var distance: Double = 0.0,
+    var receivedTime: Long = 0
 ) : RealmObject()

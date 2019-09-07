@@ -131,6 +131,7 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
     override fun onLocationChanged(location: Location) {
         // レイアウトが崩れる可能性があるため表示桁数を制限
+        gps.unixTime.set(System.currentTimeMillis().toString())
         gps.longitudeValue.set("%.11s".format(location.longitude))
         gps.latitudeValue.set("%.11s".format(location.latitude))
         gps.altitudeValue.set("%.11s".format(location.altitude))

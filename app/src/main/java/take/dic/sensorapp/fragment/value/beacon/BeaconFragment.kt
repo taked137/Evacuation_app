@@ -16,7 +16,6 @@ import org.altbeacon.beacon.*
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentBeaconBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
-import java.text.SimpleDateFormat
 import java.util.*
 
 class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
@@ -107,7 +106,8 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
                     beacon.id2.toString(),
                     beacon.id3.toString(),
                     beacon.rssi,
-                    SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS z").format(Calendar.getInstance().time)
+                    beacon.distance,
+                    System.currentTimeMillis()
                 )
                 realm.executeTransaction {
                     val model = realm.createObject(BeaconModel::class.java, currentBeacon.id)
@@ -115,10 +115,11 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
                     model.minor = currentBeacon.minor
                     model.rssi = currentBeacon.rssi
                     model.receivedTime = currentBeacon.receivedTime
+                    model.distance = currentBeacon.distance
                     realm.copyToRealm(model)
                 }
                 realm.where(BeaconModel::class.java).findAll().forEach { Log.e("got", it.toString()) }
-                pushBeaconModel("${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}")
+                pushBeaconModel("UNIXTIME: ${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}\ndistance: ${currentBeacon.distance}")
 
                 realm.close()
             }

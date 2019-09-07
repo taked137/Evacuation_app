@@ -109,6 +109,7 @@ class OrientationFragment : BaseBindingFragment() , SensorEventListener {
             )
             SensorManager.getOrientation(remapedMatrix, orientationValues)
 
+            orientation.unixTime.set(System.currentTimeMillis().toString())
             orientation.xValue.set(radianToDegrees(orientationValues[1]).toString())
             orientation.yValue.set(radianToDegrees(orientationValues[2]).toString())
             orientation.zValue.set(radianToDegrees(orientationValues[0]).toString())
