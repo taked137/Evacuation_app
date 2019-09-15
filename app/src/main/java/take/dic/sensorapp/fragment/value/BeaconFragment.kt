@@ -1,4 +1,4 @@
-package take.dic.sensorapp.fragment.value.beacon
+package take.dic.sensorapp.fragment.value
 
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
@@ -16,6 +16,8 @@ import org.altbeacon.beacon.*
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentBeaconBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
+import take.dic.sensorapp.value.beacon.BeaconModel
+import take.dic.sensorapp.value.beacon.BeaconValue
 import java.util.*
 
 class BeaconFragment : BaseBindingFragment(), BeaconConsumer {

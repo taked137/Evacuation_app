@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="beacon" type="take.dic.sensorapp.fragment.value.beacon.BeaconValue"/>
+        <variable name="beacon" type="take.dic.sensorapp.value.beacon.BeaconValue"/>
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-        <take.dic.sensorapp.fragment.value.beacon.BindingListView
+        <take.dic.sensorapp.value.beacon.BindingListView
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package take.dic.sensorapp.fragment.value.beacon
+package take.dic.sensorapp.value.beacon
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
