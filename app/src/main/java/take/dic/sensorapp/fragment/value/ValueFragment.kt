@@ -16,7 +16,7 @@ class ValueFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val motionValue = MotionValue(accelerationTitle = "加速度", gyroTitle =  "角速度", orientationTitle =  "方位")
+        val motionValue = MotionValue(accelerationTitle = "加速度", gyroTitle =  "角速度", directionTitle =  "方位")
         val bundle = Bundle()
         bundle.putSerializable("motionValue", motionValue)
 
