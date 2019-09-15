@@ -2,7 +2,7 @@ package take.dic.sensorapp.value
 
 import android.databinding.ObservableField
 
-data class GPSData(val title: String, val latitude: String, val longitude: String, val altitude: String) {
+data class GPSValue(val title: String, val latitude: String, val longitude: String, val altitude: String) {
     var titleWord = ObservableField(title)
     var unixTime = ""
     var latitudeValue = ObservableField(latitude)

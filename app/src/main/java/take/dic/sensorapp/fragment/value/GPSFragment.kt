@@ -19,12 +19,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import take.dic.sensorapp.databinding.FragmentGpsBinding
-import take.dic.sensorapp.value.GPSData
+import take.dic.sensorapp.value.GPSValue
 
 class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
     private lateinit var locationManager: LocationManager
-    private val gps = GPSData(
+    private val gps = GPSValue(
         title = "GPS",
         latitude = "",
         longitude = "",
