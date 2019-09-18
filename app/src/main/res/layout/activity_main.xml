@@ -3,8 +3,5 @@
                 android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
                 android:padding="16dp" android:id="@+id/container">
 
-    <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" android:name="take.dic.sensorapp.ValueFragment"
-            tools:layout_editor_absoluteY="310dp" tools:layout_editor_absoluteX="163dp" android:id="@+id/fragment"/>
+
 </RelativeLayout>
