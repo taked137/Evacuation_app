@@ -19,20 +19,9 @@ class MotionValue {
 
     //センサーが存在する加速度・角速度・方位情報について、すべてが新しい値を取得していたら更新
     fun updateData() {
-        var judge = true
         for (motion in motions) {
             motion.let {
-                if (it?.isUpdate == false) {
-                    judge = false
-                }
-            }
-        }
-
-        if (judge) {
-            for (motion in motions) {
-                motion.let {
-                    it?.update()
-                }
+                it?.update()
             }
         }
     }

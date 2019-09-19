@@ -122,24 +122,22 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener {
             sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         }
 
-        val period = 200000 //間隔(マイクロ秒単位)　これで多分0.2秒周期
-
         if (accelSensor != null) {
-            sensorManager!!.registerListener(this, accelSensor, period)
+            sensorManager!!.registerListener(this, accelSensor, SensorManager.SENSOR_DELAY_NORMAL)
         } else {
             motionValue.motions[0] = null //motionValue.motions[0]は加速度データ。センサがない場合はこのデータは使わない
             Toast.makeText(context, "加速度センサーが存在しません", Toast.LENGTH_LONG).show()
         }
 
         if (gyroSensor != null) {
-            sensorManager!!.registerListener(this, gyroSensor, period)
+            sensorManager!!.registerListener(this, gyroSensor, SensorManager.SENSOR_DELAY_NORMAL)
         } else {
             motionValue.motions[1] = null //motionValue.motions[1]は角速度データ。センサがない場合はこのデータは使わない
             Toast.makeText(context, "角速度センサーが存在しません", Toast.LENGTH_LONG).show()
         }
 
         if (magnetSensor != null) {
-            sensorManager!!.registerListener(this, magnetSensor, period)
+            sensorManager!!.registerListener(this, magnetSensor, SensorManager.SENSOR_DELAY_NORMAL)
         } else {
             motionValue.motions[2] = null //motionValue.motions[2]は方位データ。センサがない場合はこのデータは使わない
             Toast.makeText(context, "磁気センサーが存在しません", Toast.LENGTH_LONG).show()
@@ -182,6 +180,8 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener {
              if(motionValue.motions[1] != null) {
                  motionValue.motions[1]!!.setResult(event.values[0], event.values[1], event.values[2])
              }
+            motionValue.updateData() //三つのセンサーの値を同時に更新。角速度情報更新の時を基準にする
+
         //磁気センサー
         } else {
             mMagneticValues = event.values.clone()
@@ -214,8 +214,6 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener {
             }
 
         }
-
-        motionValue.updateData() //三つのセンサーの値を同時に更新
 
     }
 
@@ -252,8 +250,8 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener {
         }
 
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        locationRequest.interval = 0
-        locationRequest.fastestInterval = 0
+        locationRequest.interval = 1
+        locationRequest.fastestInterval = 1
         fusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
 
     }
