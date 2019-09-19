@@ -18,18 +18,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import io.realm.Realm
 import take.dic.sensorapp.databinding.FragmentGpsBinding
+import take.dic.sensorapp.service.RealmManager
 import take.dic.sensorapp.value.GPSValue
 
 class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
     private lateinit var locationManager: LocationManager
-    private val gps = GPSValue(
-        title = "GPS",
-        latitude = "",
-        longitude = "",
-        altitude = ""
-    )
+    private val gps = GPSValue().apply {
+        this.titleWord.set("GPS")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +38,8 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
 
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                1000,
-                50f,
+                200,
+                1f,
                 this
             )
         }
@@ -140,10 +139,15 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
     override fun onLocationChanged(location: Location) {
         gps.setResult(
             System.currentTimeMillis().toString(),
-            location.latitude.toFloat(),
-            location.longitude.toFloat(),
-            location.altitude.toFloat()
+            location.latitude,
+            location.longitude,
+            location.altitude
         )
+        Realm.getDefaultInstance().use { realm ->
+            realm.executeTransaction {
+                realm.copyToRealm(RealmManager.getRealmModel(realm, gps))
+            }
+        }
 
         if (checkPermission()) {
             locationManager.requestLocationUpdates(

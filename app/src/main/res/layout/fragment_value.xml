@@ -31,7 +31,7 @@
     <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/orientation_container"
+            android:id="@+id/direction_container"
             android:layout_toLeftOf="@+id/center"
             android:layout_below="@+id/acceleration_container"
             android:layout_marginTop="-420dp"

@@ -16,6 +16,7 @@ import org.altbeacon.beacon.*
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentBeaconBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
+import take.dic.sensorapp.service.RealmManager
 import take.dic.sensorapp.value.beacon.BeaconModel
 import take.dic.sensorapp.value.beacon.BeaconValue
 import java.util.*
@@ -26,14 +27,15 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
     private val mBeacon = BeaconValue()
     private var state = ""
     private lateinit var mRegion: Region
-    private lateinit var realm: Realm
 
     //iBeacon認識のためのフォーマット設定
     private val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
 
     private lateinit var beaconManager: BeaconManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val binding = bind<FragmentBeaconBinding>(inflater, container, R.layout.fragment_beacon)
         setBluetooth()
@@ -41,7 +43,6 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
         beaconManager = BeaconManager.getInstanceForApplication(activity!!)
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
-        Realm.init(activity!!)
 
         return binding.root
     }
@@ -52,7 +53,8 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
         activity!!.unbindService(p0)
     }
 
-    override fun bindService(p0: Intent?, p1: ServiceConnection, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
+    override fun bindService(p0: Intent?, p1: ServiceConnection, p2: Int): Boolean =
+        activity!!.bindService(p0, p1, p2)
 
     override fun onResume() {
         super.onResume()
@@ -62,17 +64,6 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
     override fun onPause() {
         super.onPause()
         beaconManager.unbind(this)
-    }
-
-    //TODO: 試験用(削除予定)
-    override fun onStop() {
-        realm = Realm.getDefaultInstance()
-        realm.beginTransaction()
-        realm.delete(BeaconModel::class.java)
-        realm.commitTransaction()
-        realm.close()
-
-        super.onStop()
     }
 
     override fun onBeaconServiceConnect() {
@@ -102,7 +93,6 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
         beaconManager.addRangeNotifier { beacons, _ ->
             for (beacon in beacons) {
-                realm = Realm.getDefaultInstance()
                 val currentBeacon = BeaconModel(
                     UUID.randomUUID().toString(),
                     beacon.id2.toString(),
@@ -111,19 +101,16 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
                     beacon.distance,
                     System.currentTimeMillis()
                 )
-                realm.executeTransaction {
-                    val model = realm.createObject(BeaconModel::class.java, currentBeacon.id)
-                    model.major = currentBeacon.major
-                    model.minor = currentBeacon.minor
-                    model.rssi = currentBeacon.rssi
-                    model.receivedTime = currentBeacon.receivedTime
-                    model.distance = currentBeacon.distance
-                    realm.copyToRealm(model)
-                }
-                realm.where(BeaconModel::class.java).findAll().forEach { Log.e("got", it.toString()) }
-                pushBeaconModel("UNIXTIME: ${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}\ndistance: ${currentBeacon.distance}")
+                Realm.getDefaultInstance().use { realm ->
+                    realm.executeTransaction {
+                        val model = RealmManager.getRealmModel(realm, currentBeacon)
+                        realm.copyToRealm(model)
+                    }
+                    realm.where(BeaconModel::class.java).findAll()
+                        .forEach { Log.e("got", it.toString()) }
+                    pushBeaconModel("UNIXTIME: ${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}\ndistance: ${currentBeacon.distance}")
 
-                realm.close()
+                }
             }
         }
         try {

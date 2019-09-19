@@ -11,29 +11,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import take.dic.sensorapp.value.motion.MotionValue
 
-abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventListener{
+abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventListener {
     abstract val sensorList: Map<String, Int>
     lateinit var sensorManager: SensorManager
     lateinit var motionValue: MotionValue
 
     abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): View
 
-    private fun registerListener(sensorManager: SensorManager){
+    private fun registerListener(sensorManager: SensorManager) {
         sensorList.forEach {
             val sensor = sensorManager.getDefaultSensor(it.value)
-            if(sensor != null){
+            if (sensor != null) {
                 sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
-            }
-            else{
+            } else {
                 Toast.makeText(context, "${it.key}センサーが存在しません", Toast.LENGTH_LONG).show()
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         motionValue = arguments!!.getSerializable("motionValue") as MotionValue

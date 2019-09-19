@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="direction" type="take.dic.sensorapp.value.motion.DirectionValue"/>
+        <variable name="direction" type="take.dic.sensorapp.value.motion.motions.DirectionValue"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
@@ -14,19 +14,19 @@
                 android:textSize="30dp"/>
 
         <TextView
-                android:text="@{direction.x}"
+                android:text="@{direction.xValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
 
         <TextView
-                android:text="@{direction.y}"
+                android:text="@{direction.yValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
 
         <TextView
-                android:text="@{direction.z}"
+                android:text="@{direction.zValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>

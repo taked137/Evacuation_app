@@ -5,36 +5,57 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.Realm
 import take.dic.sensorapp.R
 import take.dic.sensorapp.fragment.value.motion.AccelerationFragment
-import take.dic.sensorapp.fragment.value.motion.GyroFragment
-import take.dic.sensorapp.value.motion.MotionValue
 import take.dic.sensorapp.fragment.value.motion.DirectionFragment
+import take.dic.sensorapp.fragment.value.motion.GyroFragment
+import take.dic.sensorapp.value.beacon.BeaconModel
+import take.dic.sensorapp.value.motion.MotionValue
+import take.dic.sensorapp.value.motion.motions.AccelerationValue
+import take.dic.sensorapp.value.motion.motions.DirectionValue
+import take.dic.sensorapp.value.motion.motions.GyroValue
 
 class ValueFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val motionValue = MotionValue(accelerationTitle = "加速度", gyroTitle =  "角速度", directionTitle =  "方位")
+        val motionValue = MotionValue()
         val bundle = Bundle()
         bundle.putSerializable("motionValue", motionValue)
 
-        val motionValueArray = arrayOf<Fragment>(
-            AccelerationFragment(),
-            DirectionFragment(),
-            GyroFragment()
+        val motionValueMap = mapOf<Int, Fragment>(
+            R.id.acceleration_container to AccelerationFragment(),
+            R.id.direction_container to DirectionFragment(),
+            R.id.gyro_container to GyroFragment()
         )
-        motionValueArray.forEach { it.arguments = bundle }
+        motionValueMap.forEach { it.value.arguments = bundle }
 
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         transaction.add(R.id.gps_container, GPSFragment())
-        transaction.add(R.id.acceleration_container, motionValueArray[0])
-        transaction.add(R.id.orientation_container, motionValueArray[1])
-        transaction.add(R.id.gyro_container, motionValueArray[2])
         transaction.add(R.id.beacon_container, BeaconFragment())
+        motionValueMap.forEach { transaction.add(it.key, it.value) }
         transaction.commit()
 
         return inflater.inflate(R.layout.fragment_value, container, false)
+    }
+
+    //TODO: 試験用(削除予定)
+    override fun onStop() {
+        Realm.getDefaultInstance().use { realm ->
+            realm.beginTransaction()
+            realm.delete(BeaconModel::class.java)
+            realm.delete(AccelerationValue::class.java)
+            realm.delete(GyroValue::class.java)
+            realm.delete(DirectionValue::class.java)
+            realm.delete(MotionValue::class.java)
+            realm.commitTransaction()
+        }
+        super.onStop()
     }
 }

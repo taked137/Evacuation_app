@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentDirectionBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
-import take.dic.sensorapp.value.motion.DirectionValue
+import take.dic.sensorapp.value.motion.BaseMotionValue
+import take.dic.sensorapp.value.motion.motions.DirectionValue
 
 // TODO: 加速度センサーの種類決定
 class DirectionFragment : BaseMotionBindingFragment(), SensorEventListener {
@@ -28,7 +29,7 @@ class DirectionFragment : BaseMotionBindingFragment(), SensorEventListener {
     private lateinit var mAccelerometerValues: FloatArray
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): View {
-        direction = motionValue.directionValue
+        direction = motionValue.direction
         val binding =
             bind<FragmentDirectionBinding>(inflater, container, R.layout.fragment_direction)
         binding.direction = direction
@@ -69,7 +70,7 @@ class DirectionFragment : BaseMotionBindingFragment(), SensorEventListener {
             SensorManager.getOrientation(remapedMatrix, orientationValues)
 
             direction.setResult(
-                System.currentTimeMillis().toString(),
+                System.currentTimeMillis(),
                 radianToDegrees(orientationValues[1]),
                 radianToDegrees(orientationValues[2]),
                 radianToDegrees(orientationValues[0])

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="gyro" type="take.dic.sensorapp.value.motion.GyroValue"/>
+        <variable name="gyro" type="take.dic.sensorapp.value.motion.motions.GyroValue"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
@@ -14,19 +14,19 @@
                 android:textSize="30dp"/>
 
         <TextView
-                android:text="@{gyro.x}"
+                android:text="@{gyro.xValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
 
         <TextView
-                android:text="@{gyro.y}"
+                android:text="@{gyro.yValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
 
         <TextView
-                android:text="@{gyro.z}"
+                android:text="@{gyro.zValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>

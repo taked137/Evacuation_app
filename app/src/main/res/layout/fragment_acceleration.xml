@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="acceleration" type="take.dic.sensorapp.value.motion.AccelerationValue"/>
+        <variable name="acceleration" type="take.dic.sensorapp.value.motion.motions.AccelerationValue"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
@@ -14,19 +14,19 @@
                 android:textSize="30dp"/>
 
         <TextView
-                android:text="@{acceleration.x}"
+                android:text="@{acceleration.xValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
 
         <TextView
-                android:text="@{acceleration.y}"
+                android:text="@{acceleration.yValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
 
         <TextView
-                android:text="@{acceleration.z}"
+                android:text="@{acceleration.zValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"/>
