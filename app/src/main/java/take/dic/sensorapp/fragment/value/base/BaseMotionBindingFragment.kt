@@ -34,6 +34,7 @@ abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventLis
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         motionValue = arguments!!.getSerializable("motionValue") as MotionValue
+        //motionValue = Parcels.unwrap(arguments!!.getParcelable("motionValue"))
         sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         return getBinding(inflater, container)
     }

@@ -2,9 +2,10 @@ package take.dic.sensorapp.value.motion
 
 import android.databinding.ObservableField
 import io.realm.RealmModel
+import java.io.Serializable
 
 // Realmがクラスの継承をサポートしていないため、仕方なくインタフェースで実装
-interface BaseMotionValue : RealmModel {
+interface BaseMotionValue : RealmModel, Serializable {
     var id: String
 
     val title: ObservableField<String>
