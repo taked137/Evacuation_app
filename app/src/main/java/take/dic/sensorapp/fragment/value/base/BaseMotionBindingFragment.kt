@@ -13,6 +13,7 @@ import take.dic.sensorapp.value.motion.MotionValue
 
 abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventListener {
     abstract val sensorList: Map<String, Int>
+    abstract val setSensorCondition: () -> (Unit)
     lateinit var sensorManager: SensorManager
     lateinit var motionValue: MotionValue
 
@@ -23,6 +24,7 @@ abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventLis
             val sensor = sensorManager.getDefaultSensor(it.value)
             if (sensor != null) {
                 sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+                setSensorCondition()
             } else {
                 Toast.makeText(context, "${it.key}センサーが存在しません", Toast.LENGTH_LONG).show()
             }

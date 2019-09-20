@@ -2,6 +2,7 @@ package take.dic.sensorapp.fragment.value
 
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -17,6 +18,7 @@ import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentBeaconBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.service.RealmManager
+import take.dic.sensorapp.service.AvailableSensorManager
 import take.dic.sensorapp.value.beacon.BeaconModel
 import take.dic.sensorapp.value.beacon.BeaconValue
 import java.util.*
@@ -38,11 +40,11 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val binding = bind<FragmentBeaconBinding>(inflater, container, R.layout.fragment_beacon)
-        setBluetooth()
         binding.beacon = mBeacon
 
         beaconManager = BeaconManager.getInstanceForApplication(activity!!)
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
+        AvailableSensorManager.ble = hasBLESensor()
 
         return binding.root
     }
@@ -58,6 +60,7 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
     override fun onResume() {
         super.onResume()
+        setBluetooth()
         beaconManager.bind(this)
     }
 
@@ -93,14 +96,14 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
         beaconManager.addRangeNotifier { beacons, _ ->
             for (beacon in beacons) {
-                val currentBeacon = BeaconModel(
-                    UUID.randomUUID().toString(),
-                    beacon.id2.toString(),
-                    beacon.id3.toString(),
-                    beacon.rssi,
-                    beacon.distance,
-                    System.currentTimeMillis()
-                )
+                val currentBeacon = BeaconModel().apply {
+                    this.id = UUID.randomUUID().toString()
+                    this.major = beacon.id2.toString()
+                    this.minor = beacon.id3.toString()
+                    this.rssi = beacon.rssi
+                    this.distance = beacon.distance
+                    this.receivedTime = System.currentTimeMillis()
+                }
                 Realm.getDefaultInstance().use { realm ->
                     realm.executeTransaction {
                         val model = RealmManager.getRealmModel(realm, currentBeacon)
@@ -131,6 +134,13 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
             val btOn = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(btOn, REQUEST_ENABLE_BLUETOOTH)
         }
+    }
+
+    private fun hasBLESensor(): Boolean {
+        val bluetoothManager =
+            activity!!.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val mBluetoothAdapter = bluetoothManager.adapter
+        return mBluetoothAdapter != null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

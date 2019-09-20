@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey
 open class GPSValue : RealmObject() {
 
     @PrimaryKey
-    var id: Long = 0
+    var id = ""
 
     @Ignore
     val titleWord = ObservableField<String>()

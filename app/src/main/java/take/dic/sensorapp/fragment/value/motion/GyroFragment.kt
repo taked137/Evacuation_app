@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentGyroBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
-import take.dic.sensorapp.value.motion.BaseMotionValue
+import take.dic.sensorapp.service.AvailableSensorManager
 import take.dic.sensorapp.value.motion.motions.GyroValue
 
 class GyroFragment : BaseMotionBindingFragment(), SensorEventListener {
+    override val setSensorCondition = { AvailableSensorManager.gyro = true }
     override val sensorList = mapOf("角速度" to Sensor.TYPE_GYROSCOPE)
     private lateinit var gyro: GyroValue
 

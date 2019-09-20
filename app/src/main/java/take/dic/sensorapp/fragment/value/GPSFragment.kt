@@ -11,9 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.gms.location.*
+import io.realm.Realm
 import take.dic.sensorapp.databinding.FragmentGpsBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
+import take.dic.sensorapp.service.RealmManager
 import take.dic.sensorapp.value.GPSValue
+import take.dic.sensorapp.service.AvailableSensorManager
 
 class GPSFragment : BaseBindingFragment() {
 
@@ -50,6 +53,8 @@ class GPSFragment : BaseBindingFragment() {
             activity!!, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED)
 
+        AvailableSensorManager.gps = judge
+
         if (judge) {
             locationStart()
         } else {
@@ -71,6 +76,11 @@ class GPSFragment : BaseBindingFragment() {
                 // 更新直後の位置が格納されているはず
                 val location = locationResult?.lastLocation ?: return
                 gps.setResult(location)
+                Realm.getDefaultInstance().use { realm ->
+                    realm.executeTransaction {
+                        realm.copyToRealm(RealmManager.getRealmModel(realm, gps))
+                    }
+                }
             }
         }
 
