@@ -28,7 +28,6 @@ class ValueFragment : Fragment() {
         val motionValue = MotionValue()
         val bundle = Bundle()
         bundle.putSerializable("motionValue", motionValue)
-        //bundle.putParcelable("motionValue", Parcels.wrap(motionValue))
 
         val motionValueMap = mapOf<Int, Fragment>(
             R.id.acceleration_container to AccelerationFragment(),

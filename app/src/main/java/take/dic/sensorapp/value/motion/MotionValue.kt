@@ -10,12 +10,7 @@ import take.dic.sensorapp.value.motion.motions.DirectionValue
 import take.dic.sensorapp.value.motion.motions.GyroValue
 import java.io.Serializable
 import java.util.*
-/*
-@Parcel(
-    implementations = [io.realm.MotionValueRealmProxy::class],
-    value = Parcel.Serialization.BEAN,
-    analyze = [MotionValue::class]
-)*/
+
 open class MotionValue : RealmObject(), Serializable {
     @PrimaryKey
     var id = ""
