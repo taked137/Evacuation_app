@@ -16,6 +16,8 @@ abstract class BaseBindingFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.unbind()
+        if(this::binding.isInitialized) {
+            binding.unbind()
+        }
     }
 }
