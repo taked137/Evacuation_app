@@ -16,7 +16,7 @@ import take.dic.sensorapp.databinding.FragmentGpsBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.service.RealmManager
 import take.dic.sensorapp.value.GPSValue
-import take.dic.sensorapp.service.AvailableSensorManager
+import take.dic.sensorapp.service.DeviceInfomationManager
 
 class GPSFragment : BaseBindingFragment() {
 
@@ -53,7 +53,7 @@ class GPSFragment : BaseBindingFragment() {
             activity!!, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED)
 
-        AvailableSensorManager.gps = judge
+        DeviceInfomationManager.hasGps = judge
 
         if (judge) {
             locationStart()

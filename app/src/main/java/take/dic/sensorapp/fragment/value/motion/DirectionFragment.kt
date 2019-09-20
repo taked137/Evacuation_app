@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentDirectionBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
-import take.dic.sensorapp.service.AvailableSensorManager
+import take.dic.sensorapp.service.DeviceInfomationManager
 import take.dic.sensorapp.value.motion.motions.DirectionValue
 
 // TODO: 加速度センサーの種類決定
 class DirectionFragment : BaseMotionBindingFragment(), SensorEventListener {
-    override val setSensorCondition = { AvailableSensorManager.direction = true }
+    override val setSensorCondition = { DeviceInfomationManager.hasDirection = true }
     override val sensorList =
         mapOf("磁気" to Sensor.TYPE_MAGNETIC_FIELD, "加速度" to Sensor.TYPE_ACCELEROMETER)
     private lateinit var direction: DirectionValue
