@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SensorApp</string>
+    <string name="button">Button</string>
+    <string name="message1">位置情報へのアクセスはこのアプリに必要な機能なので許可をお願いします。</string>
+    <string name="sbar_button1">OK?</string>
+    <string name="message2">位置情報アクセスは必要な機能なので権限設定に移行し許可してください。</string>
+    <string name="sbar_button2">権限設定へ</string>
 </resources>

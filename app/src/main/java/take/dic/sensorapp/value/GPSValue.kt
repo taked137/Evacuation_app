@@ -1,6 +1,7 @@
 package take.dic.sensorapp.value
 
 import android.databinding.ObservableField
+import android.location.Location
 import io.realm.RealmObject
 import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
@@ -19,20 +20,20 @@ open class GPSValue : RealmObject() {
     @Ignore
     val altitudeValue = ObservableField<String>()
 
-    var unixTime = ""
+    var unixTime: Long = 0
     var latitude = 0.0
     var longitude = 0.0
     var altitude = 0.0
 
-    fun setResult(
-        unixTime: String, latitudeValue: Double, longitudeValue: Double, altitudeValue: Double
-    ) {
-        this.unixTime = unixTime
-        this.latitudeValue.set(latitudeValue.toString())
-        latitude = latitudeValue
-        this.longitudeValue.set(longitudeValue.toString())
-        longitude = longitudeValue
-        this.altitudeValue.set(altitudeValue.toString())
-        altitude = altitudeValue
+    fun setResult(location: Location) {
+        this.unixTime = System.currentTimeMillis()
+        this.latitudeValue.set(location.latitude.toString())
+        latitude = location.latitude
+        this.longitudeValue.set(location.longitude.toString())
+        longitude = location.longitude
+        if(location.hasAltitude()) {
+            this.altitudeValue.set(location.altitude.toString())
+            altitude = location.altitude
+        }
     }
 }

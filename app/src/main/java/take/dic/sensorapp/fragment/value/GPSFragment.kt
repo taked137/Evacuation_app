@@ -1,31 +1,23 @@
 package take.dic.sensorapp.fragment.value
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.location.LocationProvider
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import io.realm.Realm
+import com.google.android.gms.location.*
 import take.dic.sensorapp.databinding.FragmentGpsBinding
-import take.dic.sensorapp.service.RealmManager
+import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.value.GPSValue
 
-class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
+class GPSFragment : BaseBindingFragment() {
 
-    private lateinit var locationManager: LocationManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val gps = GPSValue().apply {
         this.titleWord.set("GPS")
     }
@@ -33,23 +25,16 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (Build.VERSION.SDK_INT < 23 || checkPermission()) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            checkPermission()
+        } else {
             locationStart()
-
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                200,
-                1f,
-                this
-            )
         }
     }
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
@@ -60,51 +45,39 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
     }
 
     //使用可能かどうかの判定。trueなら可能、falseなら不可能、許可を申請する
-    private fun checkPermission(): Boolean {
+    private fun checkPermission() {
         val judge = (ContextCompat.checkSelfPermission(
-            context!!,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            activity!!, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED)
 
-        return if (judge) {
-            true
+        if (judge) {
+            locationStart()
         } else {
-            ActivityCompat.requestPermissions(
-                activity!!,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                1000
-            )
-            false
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1000)
         }
+
     }
 
     private fun locationStart() {
 
         Log.d("debug", "locationStart()")
 
-        // LocationManager インスタンス生成
-        locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.d("debug", "location manager Enabled")
-        } else {
-            // GPSを設定するように促す
-            val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivity(settingsIntent)
-            Log.d("debug", "not gpsEnable, startActivity")
+        val locationRequest = LocationRequest()
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                // 更新直後の位置が格納されているはず
+                val location = locationResult?.lastLocation ?: return
+                gps.setResult(location)
+            }
         }
 
-
-        if (!checkPermission()) {
-            Log.d("debug", "checkSelfPermission false")
-            return
-        }
-
-        locationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            1000, 50f, this
-        )
-
+        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        locationRequest.interval = 0
+        locationRequest.fastestInterval = 0
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
 
@@ -123,43 +96,4 @@ class GPSFragment : android.support.v4.app.Fragment(), LocationListener {
             }
         }
     }
-
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-        when (status) {
-            LocationProvider.AVAILABLE -> Log.d("debug", "LocationProvider.AVAILABLE")
-            LocationProvider.OUT_OF_SERVICE -> Log.d("debug", "LocationProvider.OUT_OF_SERVICE")
-            LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.d(
-                "debug",
-                "LocationProvider.TEMPORARILY_UNAVAILABLE"
-            )
-        }
-    }
-
-
-    override fun onLocationChanged(location: Location) {
-        gps.setResult(
-            System.currentTimeMillis().toString(),
-            location.latitude,
-            location.longitude,
-            location.altitude
-        )
-        Realm.getDefaultInstance().use { realm ->
-            realm.executeTransaction {
-                realm.copyToRealm(RealmManager.getRealmModel(realm, gps))
-            }
-        }
-
-        if (checkPermission()) {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                1000, 50f, this
-            )
-        }
-        //位置情報更新
-
-        //locationStart()
-    }
-
-    override fun onProviderEnabled(provider: String) {}
-    override fun onProviderDisabled(provider: String) {}
 }
