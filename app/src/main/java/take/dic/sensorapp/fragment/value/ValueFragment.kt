@@ -46,13 +46,13 @@ class ValueFragment : Fragment() {
     //TODO: 試験用(削除予定)
     override fun onStop() {
         Realm.getDefaultInstance().use { realm ->
-            realm.beginTransaction()
-            realm.delete(BeaconModel::class.java)
-            realm.delete(AccelerationValue::class.java)
-            realm.delete(GyroValue::class.java)
-            realm.delete(DirectionValue::class.java)
-            realm.delete(MotionValue::class.java)
-            realm.commitTransaction()
+            realm.executeTransaction {
+                realm.delete(BeaconModel::class.java)
+                realm.delete(AccelerationValue::class.java)
+                realm.delete(GyroValue::class.java)
+                realm.delete(DirectionValue::class.java)
+                realm.delete(MotionValue::class.java)
+            }
         }
         super.onStop()
     }
