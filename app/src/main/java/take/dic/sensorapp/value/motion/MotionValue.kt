@@ -17,6 +17,7 @@ open class MotionValue : RealmObject(), Serializable {
     var accelerationValue: AccelerationValue? = null
     var gyroValue: GyroValue? = null
     var directionValue: DirectionValue? = null
+    var status: Byte = 0x00
 
     var unixTime: Long = 0
 

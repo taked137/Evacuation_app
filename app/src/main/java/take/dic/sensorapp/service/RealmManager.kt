@@ -37,16 +37,19 @@ object RealmManager {
         this.motionValue = motionValue
     }!!
 
-    fun getMotionObjects(since: Long?): List<MotionObject> {
-        val list = LinkedList<MotionObject>()
+    fun getMotionList(since: Long?): List<MotionValue> {
         Realm.getDefaultInstance().use { realm ->
-            val motions = if (since == null) {
+            return if (since == null) {
                 realm.where(MotionValue::class.java).findAll()
             } else {
                 realm.where(MotionValue::class.java).greaterThan("unixTime", since).findAll()
             }
-            motions.forEach { list.add(extractMotionObject(it)) }
         }
+    }
+
+    fun convertToMotionObjects(motions: List<MotionValue>): List<MotionObject> {
+        val list = LinkedList<MotionObject>()
+        motions.forEach { list.add(extractMotionObject(it)) }
         return list
     }
 
@@ -69,16 +72,19 @@ object RealmManager {
         motion.unixTime.toString()
     )
 
-    fun getLocationObjects(since: Long?): List<LocationObject> {
-        val list = LinkedList<LocationObject>()
+    fun getLocationList(since: Long?): List<GPSValue> {
         Realm.getDefaultInstance().use { realm ->
-            val locations = if (since == null) {
+            return if (since == null) {
                 realm.where(GPSValue::class.java).findAll()
             } else {
                 realm.where(GPSValue::class.java).greaterThan("unixTime", since).findAll()
             }
-            locations.forEach { list.add(extractLocationObject(it)) }
         }
+    }
+
+    fun convertToLocationObjects(locations: List<GPSValue>): List<LocationObject> {
+        val list = LinkedList<LocationObject>()
+        locations.forEach { list.add(extractLocationObject(it)) }
         return list
     }
 
@@ -90,32 +96,40 @@ object RealmManager {
             location.unixTime.toString()
         )
 
-    fun getBeaconObjects(since: Long?): List<BeaconObject> {
-        val list = LinkedList<BeaconObject>()
+    fun getBeaconList(since: Long?): List<BeaconModel> {
         Realm.getDefaultInstance().use { realm ->
-            while (true) {
-                realm.beginTransaction()
-                val beacon =
-                    if (since == null) {
-                        realm.where(BeaconModel::class.java).findFirst() ?: break
-                    } else {
-                        realm.where(BeaconModel::class.java).greaterThan(
-                            "receivedTime", since
-                        ).findFirst() ?: break
-                    }
-                val stBeacons = realm.where(BeaconModel::class.java)
-                    .equalTo("receivedTime", beacon.receivedTime).findAll()
-                list.add(extractBeaconObject(beacon, stBeacons))
-                beacon.deleteFromRealm()
-                stBeacons.forEach { it.deleteFromRealm() }
-                realm.commitTransaction()
+            return if (since == null) {
+                realm.where(BeaconModel::class.java).findAll().sort("receivedTime")
+            } else {
+                realm.where(BeaconModel::class.java).greaterThan("receivedTime", since).findAll()
+                    .sort("receivedTime")
             }
         }
+    }
+
+    fun convertToBeaconObjects(beacons: List<BeaconModel>): List<BeaconObject> {
+        val list = LinkedList<BeaconObject>()
+        var count = 0
+        while (true) {
+            val firstBeacon = beacons.firstOrNull() ?: break
+            val stBeacons = LinkedList<BeaconModel>()
+            val lastIndex = beacons.indexOfFirst { it.receivedTime != firstBeacon.receivedTime }
+            for (beacon in beacons) {
+                if(lastIndex <= count){
+                    break
+                }
+                stBeacons.add(beacon)
+                count++
+            }
+            list.add(extractBeaconObject(firstBeacon, stBeacons))
+            beacons.drop(lastIndex + 1)
+        }
+
         return list
     }
 
     private fun extractBeaconObject(
-        beacon: BeaconModel, stBeacons: RealmResults<BeaconModel>
+        beacon: BeaconModel, stBeacons: List<BeaconModel>
     ): BeaconObject {
         val list = LinkedList<Beacon>()
         list.add(extractBeacon(beacon))

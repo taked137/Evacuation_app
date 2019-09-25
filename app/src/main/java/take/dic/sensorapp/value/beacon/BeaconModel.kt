@@ -1,6 +1,7 @@
 package take.dic.sensorapp.value.beacon
 
 import io.realm.RealmObject
+import io.realm.annotations.Index
 import io.realm.annotations.PrimaryKey
 
 open class BeaconModel : RealmObject() {
@@ -11,4 +12,5 @@ open class BeaconModel : RealmObject() {
     var rssi = 0
     var distance = 0.0
     var receivedTime: Long = 0
+    var status: Byte = 0x00
 }

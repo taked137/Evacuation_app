@@ -24,6 +24,7 @@ open class GPSValue : RealmObject() {
     var latitude = 0.0
     var longitude = 0.0
     var altitude = 0.0
+    var status: Byte = 0x00
 
     fun setResult(location: Location) {
         this.unixTime = System.currentTimeMillis()

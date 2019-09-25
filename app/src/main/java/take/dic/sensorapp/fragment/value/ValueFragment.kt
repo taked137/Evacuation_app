@@ -11,11 +11,13 @@ import take.dic.sensorapp.R
 import take.dic.sensorapp.fragment.value.motion.AccelerationFragment
 import take.dic.sensorapp.fragment.value.motion.DirectionFragment
 import take.dic.sensorapp.fragment.value.motion.GyroFragment
+import take.dic.sensorapp.value.GPSValue
 import take.dic.sensorapp.value.beacon.BeaconModel
 import take.dic.sensorapp.value.motion.MotionValue
 import take.dic.sensorapp.value.motion.motions.AccelerationValue
 import take.dic.sensorapp.value.motion.motions.DirectionValue
 import take.dic.sensorapp.value.motion.motions.GyroValue
+import java.util.*
 
 class ValueFragment : Fragment() {
 
@@ -48,6 +50,7 @@ class ValueFragment : Fragment() {
     override fun onStop() {
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction {
+                realm.delete(GPSValue::class.java)
                 realm.delete(BeaconModel::class.java)
                 realm.delete(AccelerationValue::class.java)
                 realm.delete(GyroValue::class.java)
