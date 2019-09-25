@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentAccelerationBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
-import take.dic.sensorapp.service.DeviceInfomationManager
+import take.dic.sensorapp.service.DeviceInformationManager
 import take.dic.sensorapp.value.motion.motions.AccelerationValue
 
 class AccelerationFragment : BaseMotionBindingFragment(), SensorEventListener {
-    override val setSensorCondition = { DeviceInfomationManager.hasAcceleration = true }
+    override val setSensorCondition = { DeviceInformationManager.hasAcceleration = true }
     override val sensorList = mapOf("加速度" to Sensor.TYPE_ACCELEROMETER)
     private lateinit var acceleration: AccelerationValue
 

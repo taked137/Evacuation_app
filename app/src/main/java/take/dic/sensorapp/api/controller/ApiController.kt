@@ -11,15 +11,16 @@ import take.dic.sensorapp.api.service.APIClient
 import take.dic.sensorapp.service.RealmManager
 
 class ApiController {
-    // Realm内の全情報を一括送信するメソッド
-    fun sendAllInformation(onResponse: (response: Response<AllResponse>) -> Unit) {
+    // Realm内の情報を一括送信するメソッド
+    fun sendAllInformation(since: Long?, onResponse: (response: Response<AllResponse>) -> Unit) {
         val request = AllRequest(
+            since = since?.toString(),
             device = Device(),
             payload = Payload(
-                RealmManager.getMotionObjects(),
+                RealmManager.getMotionObjects(since),
                 listOf(),
-                RealmManager.getLocationObjects(),
-                RealmManager.getBeaconObjects()
+                RealmManager.getLocationObjects(since),
+                RealmManager.getBeaconObjects(since)
             )
         )
         APIClient.instance.all(request).enqueue(object : Callback<AllResponse> {

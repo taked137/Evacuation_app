@@ -3,7 +3,7 @@ package take.dic.sensorapp.service
 import android.os.Build
 import android.provider.Settings
 
-object DeviceInfomationManager {
+object DeviceInformationManager {
     // 端末情報
     var id = ""
     val model = Build.MODEL

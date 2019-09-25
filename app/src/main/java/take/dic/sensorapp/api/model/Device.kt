@@ -1,17 +1,17 @@
 package take.dic.sensorapp.api.model
 
-import take.dic.sensorapp.service.DeviceInfomationManager
+import take.dic.sensorapp.service.DeviceInformationManager
 
 data class Device(
-    val id: String = DeviceInfomationManager.id,
-    val model: String = DeviceInfomationManager.model,
-    val systemVersion: String = DeviceInfomationManager.version,
-    val system: String = DeviceInfomationManager.system,
+    val id: String = DeviceInformationManager.id,
+    val model: String = DeviceInformationManager.model,
+    val systemVersion: String = DeviceInformationManager.version,
+    val system: String = DeviceInformationManager.system,
     val availableSensors: AvailableSensors = AvailableSensors(
-        DeviceInfomationManager.hasAcceleration,
-        DeviceInfomationManager.hasDirection,
-        DeviceInfomationManager.hasGyro,
-        DeviceInfomationManager.hasGps,
-        DeviceInfomationManager.hasBle
+        DeviceInformationManager.hasAcceleration,
+        DeviceInformationManager.hasDirection,
+        DeviceInformationManager.hasGyro,
+        DeviceInformationManager.hasGps,
+        DeviceInformationManager.hasBle
     )
 )

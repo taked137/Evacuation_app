@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import io.realm.Realm
 import take.dic.sensorapp.R
 import take.dic.sensorapp.fragment.value.ValueFragment
-import take.dic.sensorapp.service.DeviceInfomationManager
+import take.dic.sensorapp.service.DeviceInformationManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar!!.hide()
-        DeviceInfomationManager.id = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+        DeviceInformationManager.id = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
 
         // 画像を表示するfragmentを追加します(雑)
         //supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()

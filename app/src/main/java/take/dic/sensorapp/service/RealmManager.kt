@@ -37,10 +37,14 @@ object RealmManager {
         this.motionValue = motionValue
     }!!
 
-    fun getMotionObjects(): List<MotionObject> {
+    fun getMotionObjects(since: Long?): List<MotionObject> {
         val list = LinkedList<MotionObject>()
         Realm.getDefaultInstance().use { realm ->
-            val motions = realm.where(MotionValue::class.java).findAll()
+            val motions = if (since == null) {
+                realm.where(MotionValue::class.java).findAll()
+            } else {
+                realm.where(MotionValue::class.java).greaterThan("unixTime", since).findAll()
+            }
             motions.forEach { list.add(extractMotionObject(it)) }
         }
         return list
@@ -65,10 +69,14 @@ object RealmManager {
         motion.unixTime.toString()
     )
 
-    fun getLocationObjects(): List<LocationObject> {
+    fun getLocationObjects(since: Long?): List<LocationObject> {
         val list = LinkedList<LocationObject>()
         Realm.getDefaultInstance().use { realm ->
-            val locations = realm.where(GPSValue::class.java).findAll()
+            val locations = if (since == null) {
+                realm.where(GPSValue::class.java).findAll()
+            } else {
+                realm.where(GPSValue::class.java).greaterThan("unixTime", since).findAll()
+            }
             locations.forEach { list.add(extractLocationObject(it)) }
         }
         return list
@@ -82,12 +90,19 @@ object RealmManager {
             location.unixTime.toString()
         )
 
-    fun getBeaconObjects(): List<BeaconObject> {
+    fun getBeaconObjects(since: Long?): List<BeaconObject> {
         val list = LinkedList<BeaconObject>()
         Realm.getDefaultInstance().use { realm ->
             while (true) {
                 realm.beginTransaction()
-                val beacon = realm.where(BeaconModel::class.java).findFirst() ?: break
+                val beacon =
+                    if (since == null) {
+                        realm.where(BeaconModel::class.java).findFirst() ?: break
+                    } else {
+                        realm.where(BeaconModel::class.java).greaterThan(
+                            "receivedTime", since
+                        ).findFirst() ?: break
+                    }
                 val stBeacons = realm.where(BeaconModel::class.java)
                     .equalTo("receivedTime", beacon.receivedTime).findAll()
                 list.add(extractBeaconObject(beacon, stBeacons))

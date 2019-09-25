@@ -18,7 +18,7 @@ import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentBeaconBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.service.RealmManager
-import take.dic.sensorapp.service.DeviceInfomationManager
+import take.dic.sensorapp.service.DeviceInformationManager
 import take.dic.sensorapp.value.beacon.BeaconModel
 import take.dic.sensorapp.value.beacon.BeaconValue
 import java.util.*
@@ -44,7 +44,7 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
         beaconManager = BeaconManager.getInstanceForApplication(activity!!)
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
-        DeviceInfomationManager.hasBle = hasBLESensor()
+        DeviceInformationManager.hasBle = hasBLESensor()
 
         return binding.root
     }
