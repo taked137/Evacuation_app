@@ -1,13 +1,13 @@
 package take.dic.sensorapp.service
 
 import io.realm.Realm
-import io.realm.RealmResults
 import take.dic.sensorapp.api.model.*
 import take.dic.sensorapp.value.GPSValue
 import take.dic.sensorapp.value.beacon.BeaconModel
 import take.dic.sensorapp.value.motion.BaseMotionValue
 import take.dic.sensorapp.value.motion.MotionValue
 import java.util.*
+import kotlin.experimental.and
 
 object RealmManager {
     fun getRealmModel(realm: Realm, model: GPSValue) =
@@ -37,13 +37,14 @@ object RealmManager {
         this.motionValue = motionValue
     }!!
 
-    fun getMotionList(since: Long?): List<MotionValue> {
+    fun getMotionList(since: Long?, status: RealmStatus): List<MotionValue> {
         Realm.getDefaultInstance().use { realm ->
-            return if (since == null) {
+            val list = if (since == null) {
                 realm.where(MotionValue::class.java).findAll()
             } else {
                 realm.where(MotionValue::class.java).greaterThan("unixTime", since).findAll()
             }
+            return list.filter { it.status and status.statusCode != status.statusCode }
         }
     }
 
@@ -72,13 +73,14 @@ object RealmManager {
         motion.unixTime.toString()
     )
 
-    fun getLocationList(since: Long?): List<GPSValue> {
+    fun getLocationList(since: Long?, status: RealmStatus): List<GPSValue> {
         Realm.getDefaultInstance().use { realm ->
-            return if (since == null) {
+            val list = if (since == null) {
                 realm.where(GPSValue::class.java).findAll()
             } else {
                 realm.where(GPSValue::class.java).greaterThan("unixTime", since).findAll()
             }
+            return list.filter { it.status and status.statusCode != status.statusCode }
         }
     }
 
@@ -96,14 +98,15 @@ object RealmManager {
             location.unixTime.toString()
         )
 
-    fun getBeaconList(since: Long?): List<BeaconModel> {
+    fun getBeaconList(since: Long?, status: RealmStatus): List<BeaconModel> {
         Realm.getDefaultInstance().use { realm ->
-            return if (since == null) {
+            val list = if (since == null) {
                 realm.where(BeaconModel::class.java).findAll().sort("receivedTime")
             } else {
                 realm.where(BeaconModel::class.java).greaterThan("receivedTime", since).findAll()
                     .sort("receivedTime")
             }
+            return list.filter { it.status and status.statusCode != status.statusCode }
         }
     }
 
@@ -115,7 +118,7 @@ object RealmManager {
             val stBeacons = LinkedList<BeaconModel>()
             val lastIndex = beacons.indexOfFirst { it.receivedTime != firstBeacon.receivedTime }
             for (beacon in beacons) {
-                if(lastIndex <= count){
+                if (lastIndex <= count) {
                     break
                 }
                 stBeacons.add(beacon)
