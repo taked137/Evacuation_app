@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="image" type="take.dic.sensorapp.fragment.image.MyImage"/>
     </data>
@@ -10,7 +10,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:imageUrl="@{image.imageUrl}"/>
+                app:layout_marginTop="@{image.marginInfo}"
+                android:imageUrl="@{image.imageInfo}"/>
 
     </LinearLayout>
 </layout>

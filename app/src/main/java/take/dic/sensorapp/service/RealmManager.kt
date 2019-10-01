@@ -56,19 +56,19 @@ object RealmManager {
 
     private fun extractMotionObject(motion: MotionValue): MotionObject = MotionObject(
         Motion(
-            motion.acceleration.x.toString(),
-            motion.acceleration.y.toString(),
-            motion.acceleration.z.toString()
+            motion.accelerationValue!!.x.toString(),
+            motion.accelerationValue!!.y.toString(),
+            motion.accelerationValue!!.z.toString()
         ),
         Motion(
-            motion.direction.x.toString(),
-            motion.direction.y.toString(),
-            motion.direction.z.toString()
+            motion.directionValue!!.x.toString(),
+            motion.directionValue!!.y.toString(),
+            motion.directionValue!!.z.toString()
         ),
         Motion(
-            motion.gyro.x.toString(),
-            motion.gyro.y.toString(),
-            motion.gyro.z.toString()
+            motion.gyroValue!!.x.toString(),
+            motion.gyroValue!!.y.toString(),
+            motion.gyroValue!!.z.toString()
         ),
         motion.unixTime.toString()
     )
@@ -110,13 +110,16 @@ object RealmManager {
         }
     }
 
-    fun convertToBeaconObjects(beacons: List<BeaconModel>): List<BeaconObject> {
+    fun convertToBeaconObjects(beaconModel: List<BeaconModel>): List<BeaconObject> {
         val list = LinkedList<BeaconObject>()
-        var count = 0
+        var beacons = beaconModel
+
         while (true) {
+            var count = 1
             val firstBeacon = beacons.firstOrNull() ?: break
             val stBeacons = LinkedList<BeaconModel>()
             val lastIndex = beacons.indexOfFirst { it.receivedTime != firstBeacon.receivedTime }
+
             for (beacon in beacons) {
                 if (lastIndex <= count) {
                     break
@@ -124,10 +127,16 @@ object RealmManager {
                 stBeacons.add(beacon)
                 count++
             }
-            list.add(extractBeaconObject(firstBeacon, stBeacons))
-            beacons.drop(lastIndex + 1)
-        }
 
+            val dropIndex = if (1 < lastIndex) {
+                lastIndex
+            } else {
+                1
+            }
+
+            list.add(extractBeaconObject(firstBeacon, stBeacons))
+            beacons = beacons.drop(dropIndex)
+        }
         return list
     }
 

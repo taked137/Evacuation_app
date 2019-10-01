@@ -1,7 +1,6 @@
 package take.dic.sensorapp.service
 
 import android.os.Build
-import android.provider.Settings
 
 object DeviceInformationManager {
     // 端末情報

@@ -2,7 +2,6 @@ package take.dic.sensorapp.fragment.value
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import take.dic.sensorapp.value.motion.MotionValue
 import take.dic.sensorapp.value.motion.motions.AccelerationValue
 import take.dic.sensorapp.value.motion.motions.DirectionValue
 import take.dic.sensorapp.value.motion.motions.GyroValue
-import java.util.*
 
 class ValueFragment : Fragment() {
 
@@ -37,11 +35,11 @@ class ValueFragment : Fragment() {
         )
         motionValueMap.forEach { it.value.arguments = bundle }
 
-        val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.add(R.id.gps_container, GPSFragment())
-        transaction.add(R.id.beacon_container, BeaconFragment())
-        motionValueMap.forEach { transaction.add(it.key, it.value) }
-        transaction.commit()
+        activity!!.supportFragmentManager.beginTransaction().apply {
+            this.add(R.id.gps_container, GPSFragment())
+            this.add(R.id.beacon_container, BeaconFragment())
+            motionValueMap.forEach { this.add(it.key, it.value) }
+        }.commit()
 
         return inflater.inflate(R.layout.fragment_value, container, false)
     }

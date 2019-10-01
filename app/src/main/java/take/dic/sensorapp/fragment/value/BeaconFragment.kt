@@ -109,10 +109,7 @@ class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
                         val model = RealmManager.getRealmModel(realm, currentBeacon)
                         realm.copyToRealm(model)
                     }
-                    realm.where(BeaconModel::class.java).findAll()
-                        .forEach { Log.e("got", it.toString()) }
                     pushBeaconModel("UNIXTIME: ${currentBeacon.receivedTime}\nmajor: ${currentBeacon.major}, minor: ${currentBeacon.minor}, rssi: ${currentBeacon.rssi}\ndistance: ${currentBeacon.distance}")
-
                 }
             }
         }
