@@ -1,17 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
-        <variable name="image" type="take.dic.sensorapp.fragment.image.MyImage"/>
+
+        <variable
+                name="image"
+                type="take.dic.sensorapp.fragment.image.MyImage" />
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
-        <ImageView
-                android:id="@+id/imageView"
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_marginTop="@{image.marginInfo}"
-                android:imageUrl="@{image.imageInfo}"/>
+                android:layout_margin="@{image.bottomImage.coordinate}"
+                android:layout_gravity="center_horizontal|bottom">
 
-    </LinearLayout>
+            <FrameLayout
+                    android:id="@+id/ba_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom">
+
+                <ImageView
+                        android:id="@+id/bottomImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:image_bottom="@{image.bottomImage}" />
+
+                <ImageView
+                        android:id="@+id/avatarImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:image_avatar="@{image.avatarImage}" />
+            </FrameLayout>
+
+            <ImageView
+                    android:id="@+id/directionImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/ba_image"
+                    android:layout_marginTop="25dp"
+                    android:layout_centerHorizontal="true"
+                    android:image_direction="@{image.directionImage}" />
+        </RelativeLayout>
+    </FrameLayout>
 </layout>

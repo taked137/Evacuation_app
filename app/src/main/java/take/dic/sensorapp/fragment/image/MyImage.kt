@@ -6,29 +6,46 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.Rotate
-import kotlin.math.roundToInt
+import take.dic.sensorapp.api.model.regular.image.AvatarImage
+import take.dic.sensorapp.api.model.regular.image.BottomImage
+import take.dic.sensorapp.api.model.regular.image.DirectionImage
 
-data class MyImage(val imageInfo: ImageInfo, val marginInfo: MarginInfo)
-data class ImageInfo(val imageUrl: String, val size: Int, val rotateDegree: Int)
-data class MarginInfo(
-    val topMargin: Float?,
-    val rightMargin: Float?,
-    val bottomMargin: Float?,
-    val leftMargin: Float?
+data class MyImage(
+    val avatarImage: AvatarImage,
+    val bottomImage: BottomImage,
+    val directionImage: DirectionImage
 )
 
-@BindingAdapter("android:imageUrl")
-fun ImageView.loadImage(imageInfo: ImageInfo) {
-    Glide.with(context).load(imageInfo.imageUrl).override(imageInfo.size)
-        .transform(Rotate(imageInfo.rotateDegree)).into(this)
+@BindingAdapter("android:image_bottom")
+fun ImageView.loadBottomImage(image: BottomImage) {
+    Glide.with(context)
+        .load(image.URL)
+        .override(image.magnification.toInt())
+        .transform(Rotate(image.angle.toInt()))
+        .into(this)
 }
 
-@BindingAdapter("layout_marginTop")
-fun setMargin(view: View, marginInfo: MarginInfo) {
+@BindingAdapter("android:image_avatar")
+fun ImageView.loadAvatarImage(image: AvatarImage) {
+    Glide.with(context)
+        .load(image.URL)
+        .override(500)
+        .into(this)
+}
+
+@BindingAdapter("android:image_direction")
+fun ImageView.loadDirectionImage(image: DirectionImage) {
+    Glide.with(context)
+        .load(image.URL)
+        .override(300)
+        .transform(Rotate(image.angle.toInt()))
+        .into(this)
+}
+
+@BindingAdapter("android:layout_margin")
+fun setMargin(view: View, coordinate: List<Int>) {
     view.layoutParams = (view.layoutParams as MarginLayoutParams).apply {
-        marginInfo.topMargin?.let { this.topMargin = it.roundToInt() }
-        marginInfo.rightMargin?.let { this.rightMargin = it.roundToInt() }
-        marginInfo.bottomMargin?.let { this.bottomMargin = it.roundToInt() }
-        marginInfo.leftMargin?.let { this.leftMargin = it.roundToInt() }
+        this.rightMargin = coordinate[0]
+        this.topMargin = coordinate[1]
     }
 }
