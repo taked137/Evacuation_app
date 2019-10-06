@@ -18,7 +18,7 @@ import take.dic.sensorapp.value.beacon.BeaconModel
 import take.dic.sensorapp.value.motion.MotionValue
 import kotlin.experimental.or
 
-class ApiController {
+object ApiController {
     // Realm内の情報を一括送信するメソッド
     fun sendAllInformation(since: Long?, onResponse: (response: Response<AllResponse>) -> Unit) {
         val motionList = RealmManager.getMotionList(since, RealmStatus.ALL_SENT)
@@ -48,7 +48,7 @@ class ApiController {
         })
     }
 
-    // Realm内の情報を一括送信するメソッド
+    // Realm内の情報を定期的に送信するメソッド
     fun sendSomeInformation(onResponse: (response: Response<RegularResponse>) -> Unit) {
         val motionList = RealmManager.getMotionList(null, RealmStatus.REGULAR_SENT)
         val locationList = RealmManager.getLocationList(null, RealmStatus.REGULAR_SENT)
@@ -76,7 +76,7 @@ class ApiController {
         })
     }
 
-    private fun updateStatus(motionList: List<MotionValue>, locationList: List<GPSValue>, beaconList: List<BeaconModel>, status: RealmStatus){
+    private fun updateStatus(motionList: Collection<MotionValue>, locationList: Collection<GPSValue>, beaconList: Collection<BeaconModel>, status: RealmStatus){
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction {
                 for (motion in motionList) {

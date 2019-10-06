@@ -6,7 +6,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/gps_container"
-            android:layout_toLeftOf="@+id/center"
+            android:layout_toStartOf="@+id/center"
     >
     </RelativeLayout>
 
@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/acceleration_container"
-            android:layout_toRightOf="@+id/center"
+            android:layout_toEndOf="@+id/center"
     >
     </RelativeLayout>
 
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/gyro_container"
-            android:layout_toRightOf="@+id/center"
+            android:layout_toEndOf="@+id/center"
             android:layout_below="@+id/acceleration_container"
             android:layout_marginTop="-420dp"
     >
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/direction_container"
-            android:layout_toLeftOf="@+id/center"
+            android:layout_toStartOf="@+id/center"
             android:layout_below="@+id/acceleration_container"
             android:layout_marginTop="-420dp"
     >

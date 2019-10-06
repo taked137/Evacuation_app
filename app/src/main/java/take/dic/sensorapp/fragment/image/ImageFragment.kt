@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import retrofit2.Response
+import take.dic.sensorapp.api.controller.ApiController
+import take.dic.sensorapp.api.model.regular.RegularResponse
 import take.dic.sensorapp.api.model.regular.image.AvatarImage
 import take.dic.sensorapp.api.model.regular.image.BottomImage
 import take.dic.sensorapp.api.model.regular.image.DirectionImage
@@ -41,7 +44,13 @@ class ImageFragment : BaseBindingFragment() {
 
     override fun onResume() {
         super.onResume()
-        beginRotate()
+        timer = Timer()
+        timer.schedule(2000, 2000) {
+            rotateImage()
+
+            // 実際に通信して画像を表示する
+            //ApiController.sendSomeInformation(::setImage)
+        }
     }
 
     override fun onPause() {
@@ -49,30 +58,52 @@ class ImageFragment : BaseBindingFragment() {
         timer.cancel()
     }
 
-    private fun beginRotate() {
-        timer = Timer()
-        timer.schedule(1000, 1000) {
-            image.apply {
-                this.avatarImage.set(
-                    AvatarImage(
-                        this.avatarImage.get()!!.URL
-                    )
+    private fun setImage(response: Response<RegularResponse>) {
+        val body = response.body() ?: return
+        image.apply {
+            this.avatarImage.set(
+                AvatarImage(
+                    body.avatarImage.URL
                 )
-                this.bottomImage.set(
-                    BottomImage(
-                        this.bottomImage.get()!!.URL,
-                        0.0,
-                        this.bottomImage.get()!!.coordinate,
-                        this.bottomImage.get()!!.magnification
-                    )
+            )
+            this.bottomImage.set(
+                BottomImage(
+                    body.bottomImage.URL,
+                    body.bottomImage.angle,
+                    body.bottomImage.coordinate,
+                    body.bottomImage.magnification
                 )
-                this.directionImage.set(
-                    DirectionImage(
-                        image.directionImage.get()!!.URL,
-                        90.0 * (angleCount++ % 4)
-                    )
+            )
+            this.directionImage.set(
+                DirectionImage(
+                    body.directionImage.URL,
+                    body.directionImage.angle
                 )
-            }
+            )
+        }
+    }
+
+    private fun rotateImage() {
+        image.apply {
+            this.avatarImage.set(
+                AvatarImage(
+                    this.avatarImage.get()!!.URL
+                )
+            )
+            this.bottomImage.set(
+                BottomImage(
+                    this.bottomImage.get()!!.URL,
+                    0.0,
+                    this.bottomImage.get()!!.coordinate,
+                    this.bottomImage.get()!!.magnification
+                )
+            )
+            this.directionImage.set(
+                DirectionImage(
+                    image.directionImage.get()!!.URL,
+                    90.0 * (angleCount++ % 4)
+                )
+            )
         }
     }
 }

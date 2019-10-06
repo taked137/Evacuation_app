@@ -3,10 +3,10 @@ package take.dic.sensorapp.api.model
 import com.squareup.moshi.Json
 
 data class Payload(
-    @field:Json(name = "MotionObjects") val motionObjects: List<MotionObject>,
-    @field:Json(name = "HeadingObjects") val headingObjects: List<HeadingObject>,
-    @field:Json(name = "LocationObjects") val locationObjects: List<LocationObject>,
-    @field:Json(name = "BeaconObjects") val beaconObjects: List<BeaconObject>
+    @field:Json(name = "MotionObjects") val motionObjects: Collection<MotionObject>,
+    @field:Json(name = "HeadingObjects") val headingObjects: Collection<HeadingObject>,
+    @field:Json(name = "LocationObjects") val locationObjects: Collection<LocationObject>,
+    @field:Json(name = "BeaconObjects") val beaconObjects: Collection<BeaconObject>
 )
 
 data class MotionObject(
@@ -37,7 +37,7 @@ data class LocationObject(
 )
 
 data class BeaconObject(
-    val beacons: List<Beacon>,
+    val beacons: Collection<Beacon>,
     val receivedTime: String
 )
 
