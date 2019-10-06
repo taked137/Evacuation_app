@@ -1,6 +1,7 @@
 package take.dic.sensorapp.fragment.image
 
 import android.databinding.BindingAdapter
+import android.databinding.ObservableField
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
@@ -10,11 +11,11 @@ import take.dic.sensorapp.api.model.regular.image.AvatarImage
 import take.dic.sensorapp.api.model.regular.image.BottomImage
 import take.dic.sensorapp.api.model.regular.image.DirectionImage
 
-data class MyImage(
-    val avatarImage: AvatarImage,
-    val bottomImage: BottomImage,
-    val directionImage: DirectionImage
-)
+class MyImage(avatarImage: AvatarImage, bottomImage: BottomImage, directionImage: DirectionImage) {
+    val avatarImage: ObservableField<AvatarImage> = ObservableField(avatarImage)
+    val bottomImage: ObservableField<BottomImage> = ObservableField(bottomImage)
+    val directionImage: ObservableField<DirectionImage> = ObservableField(directionImage)
+}
 
 @BindingAdapter("android:image_bottom")
 fun ImageView.loadBottomImage(image: BottomImage) {
