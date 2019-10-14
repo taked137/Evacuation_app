@@ -46,7 +46,7 @@ fun ImageView.loadDirectionImage(image: DirectionImage) {
 @BindingAdapter("android:layout_margin")
 fun setMargin(view: View, coordinate: List<Int>) {
     view.layoutParams = (view.layoutParams as MarginLayoutParams).apply {
-        this.rightMargin = coordinate[0]
+        this.leftMargin = coordinate[0]
         this.topMargin = coordinate[1]
     }
 }
