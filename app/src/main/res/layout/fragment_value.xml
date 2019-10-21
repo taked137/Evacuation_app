@@ -50,6 +50,14 @@
                 android:layout_below="@+id/GPSY"
                 android:textSize="17dp"/>
 
+        <TextView
+                android:id="@+id/GPSD"
+                android:text="@{gps.direction}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GPSA"
+                android:textSize="17dp"/>
+
         <!--加速度についてのテキスト-->
         <TextView
                 android:id="@+id/Acceleration"

@@ -246,6 +246,7 @@ class ValueFragment : Fragment(), BeaconConsumer, SensorEventListener {
                 gps.latitude.set(location.latitude.toString())// + " ${num++}回目")
                 gps.longitude.set(location.longitude.toString() )
                 gps.altitude.set(location.altitude.toString())
+                gps.direction.set(location.bearing.toString()) //このbearingが方向らしいです
             }
         }
 

@@ -10,10 +10,12 @@ class GPSValue(val title : String) {
     val latitude: ObservableField<String> = ObservableField("")
     val longitude: ObservableField<String> = ObservableField("")
     val altitude: ObservableField<String> = ObservableField("")
+    val direction:ObservableField<String> = ObservableField("")
 
-    fun setResult(latitude : Float, longitude : Float, altitude : Float) {
+    fun setResult(latitude : Float, longitude : Float, altitude : Float, direction: FileWalkDirection) {
         this.latitude.set(latitude.toString())
         this.longitude.set(longitude.toString())
         this.altitude.set(altitude.toString())
+        this.direction.set(direction.toString())
     }
 }
