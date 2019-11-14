@@ -4,8 +4,6 @@ import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.Rotate
@@ -17,7 +15,7 @@ import take.dic.sensorapp.api.model.regular.image.BaseImg
 import take.dic.sensorapp.service.DeviceInformationManager
 import java.io.Serializable
 
-class MyImage(avatarImg: AvatarImg, bottomImg: BaseImg, arrowImg: ArrowImg): Serializable {
+class MyImage(avatarImg: AvatarImg, bottomImg: BaseImg, arrowImg: ArrowImg) : Serializable {
     val avatarImg: ObservableField<AvatarImg> = ObservableField(avatarImg)
     val bottomImg: ObservableField<BaseImg> = ObservableField(bottomImg)
     val arrowImg: ObservableField<ArrowImg> = ObservableField(arrowImg)
@@ -31,10 +29,18 @@ fun ImageView.loadBottomImage(img: BaseImg) {
         .transform(Rotate(img.deg.toInt()))
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                val x = if (DeviceInformationManager.size.x > resource.width)
+                val width = if (resource.width < DeviceInformationManager.size.x) {
                     resource.width
-                else DeviceInformationManager.size.x
-                val bitmap = Bitmap.createBitmap(resource, 0, 0, x, resource.height)
+                } else {
+                    DeviceInformationManager.size.x
+                }
+                val height = if(resource.height < DeviceInformationManager.size.y) {
+                    resource.height
+                } else {
+                    DeviceInformationManager.size.y
+                }
+
+                val bitmap = Bitmap.createBitmap(resource, 0, 0, width, height)
                 Glide.with(context).load(bitmap).into(this@loadBottomImage)
             }
 
@@ -58,12 +64,4 @@ fun ImageView.loadDirectionImage(img: ArrowImg) {
         .override(img.IMAGE_SIZE)
         .transform(Rotate(img.deg.toInt()))
         .into(this)
-}
-
-@BindingAdapter("android:layout_margin")
-fun setMargin(view: View, coordinate: List<Int>) {
-    /*view.layoutParams = (view.layoutParams as MarginLayoutParams).apply {
-        this.rightMargin = coordinate[0]
-        this.topMargin = coordinate[1]
-    }*/
 }

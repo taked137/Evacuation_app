@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import retrofit2.Response
 import take.dic.sensorapp.api.controller.ApiController
 import take.dic.sensorapp.api.model.regular.RegularResponse
+import take.dic.sensorapp.api.model.regular.image.ArrowImg
 import take.dic.sensorapp.api.model.regular.image.AvatarImg
 import take.dic.sensorapp.api.model.regular.image.BaseImg
-import take.dic.sensorapp.api.model.regular.image.ArrowImg
 import take.dic.sensorapp.databinding.FragmentImageBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import java.util.*
@@ -39,33 +39,21 @@ class ImageFragment : BaseBindingFragment() {
 
     override fun onPause() {
         super.onPause()
-        if(this::timer.isInitialized) {
+        if (this::timer.isInitialized) {
             timer.cancel()
         }
+
+        fragmentManager!!.beginTransaction().remove(this).commit()
     }
 
     private fun setImage(response: Response<RegularResponse>) {
         val body = response.body() ?: return
         image.apply {
-            this.avatarImg.set(
-                AvatarImg(
-                    body.avatarImg.URL
-                )
-            )
+            this.avatarImg.set(AvatarImg(body.avatarImg.URL))
             this.bottomImg.set(
-                BaseImg(
-                    body.baseImg.URL,
-                    body.baseImg.deg,
-                    body.baseImg.offset,
-                    body.baseImg.exp
-                )
+                BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp)
             )
-            this.arrowImg.set(
-                ArrowImg(
-                    body.arrowImg.URL,
-                    body.arrowImg.deg
-                )
-            )
+            this.arrowImg.set(ArrowImg(body.arrowImg.URL, body.arrowImg.deg))
         }
     }
 
