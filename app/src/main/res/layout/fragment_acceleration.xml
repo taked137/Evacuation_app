@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
-        <variable name="acceleration" type="take.dic.sensorapp.sensorvalue.motion.motions.AccelerationValue"/>
+
+        <variable
+                name="acceleration"
+                type="take.dic.sensorapp.sensorvalue.motion.motions.AccelerationValue" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@{acceleration.title}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30dp"/>
+                android:textSize="30sp" />
 
         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@{acceleration.xValue}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="17dp"/>
+                android:textSize="17sp" />
 
         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@{acceleration.yValue}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="17dp"/>
+                android:textSize="17sp" />
 
         <TextView
-                android:text="@{acceleration.zValue}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17dp"/>
+                android:text="@{acceleration.zValue}"
+                android:textSize="17sp" />
 
     </LinearLayout>
 </layout>

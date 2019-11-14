@@ -18,9 +18,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:scaleType="centerCrop"
                 android:layout_margin="@{image.bottomImg.offset}"
-                android:image_bottom="@{image.bottomImg}" />
+                android:image_bottom="@{image.bottomImg}"
+                android:scaleType="centerCrop" />
 
         <LinearLayout
                 android:layout_width="wrap_content"
