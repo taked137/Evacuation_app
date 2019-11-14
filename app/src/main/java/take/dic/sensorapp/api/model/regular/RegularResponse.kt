@@ -1,12 +1,12 @@
 package take.dic.sensorapp.api.model.regular
 
-import take.dic.sensorapp.api.model.regular.image.AvatarImage
-import take.dic.sensorapp.api.model.regular.image.BottomImage
-import take.dic.sensorapp.api.model.regular.image.DirectionImage
+import take.dic.sensorapp.api.model.regular.image.AvatarImg
+import take.dic.sensorapp.api.model.regular.image.BaseImg
+import take.dic.sensorapp.api.model.regular.image.ArrowImg
 
 // TODO: 命名
 data class RegularResponse(
-    val bottomImage: BottomImage,
-    val directionImage: DirectionImage,
-    val avatarImage: AvatarImage
+    val baseImg: BaseImg,
+    val arrowImg: ArrowImg,
+    val avatarImg: AvatarImg
 )

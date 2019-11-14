@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import take.dic.sensorapp.value.motion.MotionValue
+import take.dic.sensorapp.sensorvalue.motion.MotionValue
 
 abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventListener {
     abstract val sensorList: Map<String, Int>
@@ -31,9 +31,7 @@ abstract class BaseMotionBindingFragment : BaseBindingFragment(), SensorEventLis
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         motionValue = arguments!!.getSerializable("motionValue") as MotionValue
         sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager

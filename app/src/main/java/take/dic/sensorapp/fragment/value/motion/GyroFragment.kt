@@ -10,7 +10,7 @@ import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentGyroBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
 import take.dic.sensorapp.service.DeviceInformationManager
-import take.dic.sensorapp.value.motion.motions.GyroValue
+import take.dic.sensorapp.sensorvalue.motion.motions.GyroValue
 
 class GyroFragment : BaseMotionBindingFragment(), SensorEventListener {
     override val setSensorCondition = { DeviceInformationManager.hasGyro = true }

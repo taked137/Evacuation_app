@@ -2,38 +2,49 @@ package take.dic.sensorapp.fragment.value
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.realm.Realm
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import retrofit2.Response
 import take.dic.sensorapp.R
+import take.dic.sensorapp.api.controller.ApiController
+import take.dic.sensorapp.api.model.regular.RegularResponse
+import take.dic.sensorapp.api.model.regular.image.ArrowImg
+import take.dic.sensorapp.api.model.regular.image.AvatarImg
+import take.dic.sensorapp.api.model.regular.image.BaseImg
+import take.dic.sensorapp.fragment.image.ImageFragment
+import take.dic.sensorapp.fragment.image.MyImage
 import take.dic.sensorapp.fragment.value.motion.AccelerationFragment
 import take.dic.sensorapp.fragment.value.motion.DirectionFragment
 import take.dic.sensorapp.fragment.value.motion.GyroFragment
-import take.dic.sensorapp.value.GPSValue
-import take.dic.sensorapp.value.beacon.BeaconModel
-import take.dic.sensorapp.value.motion.MotionValue
-import take.dic.sensorapp.value.motion.motions.AccelerationValue
-import take.dic.sensorapp.value.motion.motions.DirectionValue
-import take.dic.sensorapp.value.motion.motions.GyroValue
+import take.dic.sensorapp.sensorvalue.GPSValue
+import take.dic.sensorapp.sensorvalue.beacon.BeaconModel
+import take.dic.sensorapp.sensorvalue.motion.MotionValue
+import take.dic.sensorapp.sensorvalue.motion.motions.AccelerationValue
+import take.dic.sensorapp.sensorvalue.motion.motions.DirectionValue
+import take.dic.sensorapp.sensorvalue.motion.motions.GyroValue
 
 class ValueFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val motionValue = MotionValue()
-        val bundle = Bundle()
-        bundle.putSerializable("motionValue", motionValue)
+        val mBundle = Bundle()
+        mBundle.putSerializable("motionValue", motionValue)
 
         val motionValueMap = mapOf<Int, Fragment>(
             R.id.acceleration_container to AccelerationFragment(),
             R.id.direction_container to DirectionFragment(),
             R.id.gyro_container to GyroFragment()
         )
-        motionValueMap.forEach { it.value.arguments = bundle }
+
+        motionValueMap.forEach { it.value.arguments = mBundle }
 
         activity!!.supportFragmentManager.beginTransaction().apply {
             this.add(R.id.gps_container, GPSFragment())
@@ -41,11 +52,32 @@ class ValueFragment : Fragment() {
             motionValueMap.forEach { this.add(it.key, it.value) }
         }.commit()
 
+        GlobalScope.launch {
+            delay(2000)
+            ApiController.sendSomeInformation { response ->
+                val iBundle = Bundle()
+                iBundle.putSerializable("initialImage", getImage(response))
+                val imageFragment = ImageFragment()
+                imageFragment.arguments = iBundle
+                activity!!.supportFragmentManager.beginTransaction().add(R.id.container, imageFragment).commit()
+            }
+        }
+
         return inflater.inflate(R.layout.fragment_value, container, false)
     }
 
-    //TODO: 試験用(削除予定)
+    private fun getImage(response: Response<RegularResponse>): MyImage {
+        val body = response.body()!!
+        return MyImage(
+            AvatarImg(body.avatarImg.URL),
+            BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp),
+            ArrowImg(body.arrowImg.URL, body.arrowImg.deg)
+        )
+    }
+
     override fun onStop() {
+        ApiController.sendAllInformation(System.currentTimeMillis()) { Log.e("allSend", it.toString()) }
+
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction {
                 realm.delete(GPSValue::class.java)
@@ -56,6 +88,7 @@ class ValueFragment : Fragment() {
                 realm.delete(MotionValue::class.java)
             }
         }
+
         super.onStop()
     }
 }

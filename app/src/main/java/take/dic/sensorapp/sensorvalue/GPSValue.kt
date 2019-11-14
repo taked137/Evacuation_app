@@ -1,4 +1,4 @@
-package take.dic.sensorapp.value
+package take.dic.sensorapp.sensorvalue
 
 import android.databinding.ObservableField
 import android.location.Location

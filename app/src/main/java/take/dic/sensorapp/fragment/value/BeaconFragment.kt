@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.RemoteException
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +18,8 @@ import take.dic.sensorapp.databinding.FragmentBeaconBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.service.RealmManager
 import take.dic.sensorapp.service.DeviceInformationManager
-import take.dic.sensorapp.value.beacon.BeaconModel
-import take.dic.sensorapp.value.beacon.BeaconValue
+import take.dic.sensorapp.sensorvalue.beacon.BeaconModel
+import take.dic.sensorapp.sensorvalue.beacon.BeaconValue
 import java.util.*
 
 class BeaconFragment : BaseBindingFragment(), BeaconConsumer {

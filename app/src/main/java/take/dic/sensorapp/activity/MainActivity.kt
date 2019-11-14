@@ -1,9 +1,13 @@
 package take.dic.sensorapp.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Point
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.WindowManager
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import take.dic.sensorapp.R
@@ -18,12 +22,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar!!.hide()
 
         Realm.init(this)
         val config = RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
         Realm.setDefaultConfiguration(config)
 
-        supportActionBar!!.hide()
+        this.windowManager.defaultDisplay.getSize(DeviceInformationManager.size)
         DeviceInformationManager.id =
             Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
 
@@ -31,8 +36,5 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.container, ValueFragment())
                 .commit()
         }
-
-        // 画像を表示するfragmentを追加します(雑)
-        supportFragmentManager.beginTransaction().add(R.id.container, ImageFragment()).commit()
     }
 }

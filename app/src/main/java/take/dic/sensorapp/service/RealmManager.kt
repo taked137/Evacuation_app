@@ -2,10 +2,10 @@ package take.dic.sensorapp.service
 
 import io.realm.Realm
 import take.dic.sensorapp.api.model.*
-import take.dic.sensorapp.value.GPSValue
-import take.dic.sensorapp.value.beacon.BeaconModel
-import take.dic.sensorapp.value.motion.BaseMotionValue
-import take.dic.sensorapp.value.motion.MotionValue
+import take.dic.sensorapp.sensorvalue.GPSValue
+import take.dic.sensorapp.sensorvalue.beacon.BeaconModel
+import take.dic.sensorapp.sensorvalue.motion.BaseMotionValue
+import take.dic.sensorapp.sensorvalue.motion.MotionValue
 import java.util.*
 import kotlin.experimental.and
 
@@ -44,7 +44,7 @@ object RealmManager {
             } else {
                 realm.where(MotionValue::class.java).greaterThan("unixTime", since).findAll()
             }
-            return list.filter { it.status and status.statusCode != status.statusCode }
+            return realm.copyFromRealm(list).filter { it.status and status.statusCode != status.statusCode }
         }
     }
 
@@ -80,7 +80,7 @@ object RealmManager {
             } else {
                 realm.where(GPSValue::class.java).greaterThan("unixTime", since).findAll()
             }
-            return list.filter { it.status and status.statusCode != status.statusCode }
+            return realm.copyFromRealm(list).filter { it.status and status.statusCode != status.statusCode }
         }
     }
 
@@ -106,7 +106,7 @@ object RealmManager {
                 realm.where(BeaconModel::class.java).greaterThan("receivedTime", since).findAll()
                     .sort("receivedTime")
             }
-            return list.filter { it.status and status.statusCode != status.statusCode }
+            return realm.copyFromRealm(list).filter { it.status and status.statusCode != status.statusCode }
         }
     }
 

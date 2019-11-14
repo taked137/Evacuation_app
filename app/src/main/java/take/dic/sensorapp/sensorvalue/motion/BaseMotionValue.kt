@@ -1,4 +1,4 @@
-package take.dic.sensorapp.value.motion
+package take.dic.sensorapp.sensorvalue.motion
 
 import android.databinding.ObservableField
 import io.realm.RealmModel

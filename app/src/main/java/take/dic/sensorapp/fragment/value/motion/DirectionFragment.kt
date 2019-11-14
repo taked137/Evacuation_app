@@ -11,7 +11,7 @@ import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentDirectionBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
 import take.dic.sensorapp.service.DeviceInformationManager
-import take.dic.sensorapp.value.motion.motions.DirectionValue
+import take.dic.sensorapp.sensorvalue.motion.motions.DirectionValue
 
 // TODO: 加速度センサーの種類決定
 class DirectionFragment : BaseMotionBindingFragment(), SensorEventListener {

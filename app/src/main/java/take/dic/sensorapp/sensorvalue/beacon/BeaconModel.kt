@@ -1,7 +1,6 @@
-package take.dic.sensorapp.value.beacon
+package take.dic.sensorapp.sensorvalue.beacon
 
 import io.realm.RealmObject
-import io.realm.annotations.Index
 import io.realm.annotations.PrimaryKey
 
 open class BeaconModel : RealmObject() {

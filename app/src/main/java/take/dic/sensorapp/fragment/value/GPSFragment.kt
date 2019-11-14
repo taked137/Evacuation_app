@@ -15,7 +15,7 @@ import io.realm.Realm
 import take.dic.sensorapp.databinding.FragmentGpsBinding
 import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import take.dic.sensorapp.service.RealmManager
-import take.dic.sensorapp.value.GPSValue
+import take.dic.sensorapp.sensorvalue.GPSValue
 import take.dic.sensorapp.service.DeviceInformationManager
 
 class GPSFragment : BaseBindingFragment() {

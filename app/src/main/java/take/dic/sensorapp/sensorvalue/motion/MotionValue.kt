@@ -1,13 +1,13 @@
-package take.dic.sensorapp.value.motion
+package take.dic.sensorapp.sensorvalue.motion
 
 import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 import take.dic.sensorapp.service.RealmManager
-import take.dic.sensorapp.value.motion.motions.AccelerationValue
-import take.dic.sensorapp.value.motion.motions.DirectionValue
-import take.dic.sensorapp.value.motion.motions.GyroValue
+import take.dic.sensorapp.sensorvalue.motion.motions.AccelerationValue
+import take.dic.sensorapp.sensorvalue.motion.motions.DirectionValue
+import take.dic.sensorapp.sensorvalue.motion.motions.GyroValue
 import java.io.Serializable
 import java.util.*
 

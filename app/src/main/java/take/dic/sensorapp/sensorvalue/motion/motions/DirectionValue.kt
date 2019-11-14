@@ -1,16 +1,17 @@
-package take.dic.sensorapp.value.motion.motions
+package take.dic.sensorapp.sensorvalue.motion.motions
 
 import android.databinding.ObservableField
 import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
-import take.dic.sensorapp.value.motion.BaseMotionValue
-import take.dic.sensorapp.value.motion.MotionValue
+import take.dic.sensorapp.sensorvalue.motion.BaseMotionValue
+import take.dic.sensorapp.sensorvalue.motion.MotionValue
 
 @RealmClass
-open class AccelerationValue : BaseMotionValue {
+open class DirectionValue : BaseMotionValue {
     @PrimaryKey
     override var id = ""
+
     @Ignore
     override val title = ObservableField<String>()
     @Ignore

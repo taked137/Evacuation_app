@@ -1,4 +1,4 @@
-package take.dic.sensorapp.value.beacon
+package take.dic.sensorapp.sensorvalue.beacon
 
 import android.databinding.ObservableArrayList
 

@@ -9,9 +9,7 @@ import android.view.ViewGroup
 abstract class BaseBindingFragment : Fragment() {
     lateinit var binding: ViewDataBinding
 
-    inline fun <reified T : ViewDataBinding> bind(
-        inflater: LayoutInflater, container: ViewGroup?, layoutId: Int
-    ): T {
+    inline fun <reified T : ViewDataBinding> bind(inflater: LayoutInflater, container: ViewGroup?, layoutId: Int): T {
         binding = DataBindingUtil.inflate<T>(inflater, layoutId, container, false)
         return binding as T
     }

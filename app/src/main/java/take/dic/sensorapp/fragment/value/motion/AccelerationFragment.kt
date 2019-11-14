@@ -10,7 +10,7 @@ import take.dic.sensorapp.R
 import take.dic.sensorapp.databinding.FragmentAccelerationBinding
 import take.dic.sensorapp.fragment.value.base.BaseMotionBindingFragment
 import take.dic.sensorapp.service.DeviceInformationManager
-import take.dic.sensorapp.value.motion.motions.AccelerationValue
+import take.dic.sensorapp.sensorvalue.motion.motions.AccelerationValue
 
 class AccelerationFragment : BaseMotionBindingFragment(), SensorEventListener {
     override val setSensorCondition = { DeviceInformationManager.hasAcceleration = true }
