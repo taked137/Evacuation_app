@@ -57,14 +57,13 @@ class ValueFragment : Fragment() {
     }
 
     override fun onResume() {
+        super.onResume()
         initializeImage = GlobalScope.launch(Dispatchers.Default) {
             while(!hasSent) {
                 delay(2000)
                 ApiController.sendSomeInformation(::setImage)
             }
         }
-
-        super.onResume()
     }
 
     override fun onStop() {

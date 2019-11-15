@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.RemoteException
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ import java.util.*
 
 class BeaconFragment : BaseBindingFragment(), BeaconConsumer {
 
-    val REQUEST_ENABLE_BLUETOOTH = 4
+    private val REQUEST_ENABLE_BLUETOOTH = 4
     private val mBeacon = BeaconValue()
     private var state = ""
     private lateinit var mRegion: Region

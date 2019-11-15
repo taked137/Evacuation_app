@@ -74,7 +74,6 @@ object ApiController {
                 if (response.code() == 200) {
                     onResponse(response)
                     updateStatus(motionList, locationList, beaconList, RealmStatus.REGULAR_SENT)
-                    Log.e("mrszk", response.body().toString())
                 }
             }
 

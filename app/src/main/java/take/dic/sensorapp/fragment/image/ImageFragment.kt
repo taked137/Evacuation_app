@@ -15,7 +15,7 @@ import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import java.util.*
 import kotlin.concurrent.schedule
 
-// TODO: BottomImageの座標調整
+// TODO: BottomImgの表示座標調整
 class ImageFragment : BaseBindingFragment() {
     lateinit var timer: Timer
     lateinit var image: MyImage
@@ -50,11 +50,10 @@ class ImageFragment : BaseBindingFragment() {
         val body = response.body() ?: return
         image.apply {
             this.avatarImg.set(AvatarImg(body.avatarImg.URL))
-            this.bottomImg.set(
+            this.baseImg.set(
                 BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp)
             )
             this.arrowImg.set(ArrowImg(body.arrowImg.URL, body.arrowImg.deg))
         }
     }
-
 }

@@ -9,22 +9,21 @@
     </data>
 
     <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <ImageView
                 android:id="@+id/image_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:image_bottom="@{image.bottomImg}"
+                android:layout_gravity="center"
+                android:image_bottom="@{image.baseImg}"
                 android:scaleType="centerCrop" />
 
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="center"
                 android:layout_marginBottom="50dp"
                 android:orientation="vertical">
 
