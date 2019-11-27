@@ -58,6 +58,7 @@ class ValueFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         initializeImage = GlobalScope.launch(Dispatchers.Default) {
             while(!hasSent) {
                 delay(2000)
@@ -68,6 +69,7 @@ class ValueFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+
         if(initializeImage.isActive) {
             initializeImage.cancel()
         }

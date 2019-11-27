@@ -16,6 +16,7 @@ object RealmManager {
             this.latitude = model.latitude
             this.longitude = model.longitude
             this.altitude = model.altitude
+            this.direction = model.direction
             this.unixTime = model.unixTime
         }!!
 

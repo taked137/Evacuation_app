@@ -24,6 +24,7 @@ object ApiController {
         val locationList = RealmManager.getLocationList(since, RealmStatus.ALL_SENT)
         val beaconList = RealmManager.getBeaconList(since, RealmStatus.ALL_SENT)
         val locationObjects = RealmManager.convertToLocationObjects(locationList)
+
         val request = AllRequest(
             since = since?.toString(),
             device = Device(),
