@@ -37,5 +37,11 @@
                 android:text="@{gps.altitudeValue}"
                 android:textSize="17sp" />
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{gps.directionValue}"
+                android:textSize="17sp" />
+
     </LinearLayout>
 </layout>

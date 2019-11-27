@@ -21,12 +21,13 @@ import take.dic.sensorapp.service.DeviceInformationManager
 class GPSFragment : BaseBindingFragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
     private val gps = GPSValue().apply {
         this.titleWord.set("GPS")
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         if (Build.VERSION.SDK_INT >= 23) {
             checkPermission()
@@ -35,10 +36,16 @@ class GPSFragment : BaseBindingFragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+        if(this::locationCallback.isInitialized) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        }
+    }
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
         val binding = FragmentGpsBinding.inflate(inflater, container, false)
@@ -71,7 +78,7 @@ class GPSFragment : BaseBindingFragment() {
 
         val locationRequest = LocationRequest()
 
-        val locationCallback = object : LocationCallback() {
+        locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 // 更新直後の位置が格納されているはず
                 val location = locationResult?.lastLocation ?: return
@@ -91,9 +98,7 @@ class GPSFragment : BaseBindingFragment() {
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 1000) {
             // 使用が許可された
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {

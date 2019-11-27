@@ -1,6 +1,5 @@
 package take.dic.sensorapp.api.controller
 
-import android.util.Log
 import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,13 +23,14 @@ object ApiController {
         val motionList = RealmManager.getMotionList(since, RealmStatus.ALL_SENT)
         val locationList = RealmManager.getLocationList(since, RealmStatus.ALL_SENT)
         val beaconList = RealmManager.getBeaconList(since, RealmStatus.ALL_SENT)
+        val locationObjects = RealmManager.convertToLocationObjects(locationList)
         val request = AllRequest(
             since = since?.toString(),
             device = Device(),
             payload = Payload(
                 RealmManager.convertToMotionObjects(motionList),
-                listOf(),
-                RealmManager.convertToLocationObjects(locationList),
+                locationObjects.second,
+                locationObjects.first,
                 RealmManager.convertToBeaconObjects(beaconList)
             )
         )
@@ -57,12 +57,14 @@ object ApiController {
         val motionList = RealmManager.getMotionList(null, RealmStatus.REGULAR_SENT)
         val locationList = RealmManager.getLocationList(null, RealmStatus.REGULAR_SENT)
         val beaconList = RealmManager.getBeaconList(null, RealmStatus.REGULAR_SENT)
+        val locationObjects = RealmManager.convertToLocationObjects(locationList)
+
         val request = RegularRequest(
             device = Device(),
             payload = Payload(
                 RealmManager.convertToMotionObjects(motionList),
-                listOf(),
-                RealmManager.convertToLocationObjects(locationList),
+                locationObjects.second,
+                locationObjects.first,
                 RealmManager.convertToBeaconObjects(beaconList)
             )
         )

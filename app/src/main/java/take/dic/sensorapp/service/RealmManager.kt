@@ -85,10 +85,15 @@ object RealmManager {
         }
     }
 
-    fun convertToLocationObjects(locations: Collection<GPSValue>): Collection<LocationObject> {
-        val list = LinkedList<LocationObject>()
-        locations.forEach { list.add(extractLocationObject(it)) }
-        return list
+    fun convertToLocationObjects(locations: Collection<GPSValue>): Pair<Collection<LocationObject>, Collection<HeadingObject>> {
+        val locationList = LinkedList<LocationObject>()
+        val headingList = LinkedList<HeadingObject>()
+        for(location in locations) {
+            locationList.add(extractLocationObject(location))
+            headingList.add(extractHeadingObject(location))
+        }
+
+        return Pair(locationList, headingList)
     }
 
     private fun extractLocationObject(location: GPSValue): LocationObject =
@@ -96,6 +101,12 @@ object RealmManager {
             location.latitude.toString(),
             location.longitude.toString(),
             location.altitude.toString(),
+            location.unixTime.toString()
+        )
+
+    private fun extractHeadingObject(location: GPSValue): HeadingObject =
+        HeadingObject(
+            location.direction.toString(),
             location.unixTime.toString()
         )
 
@@ -141,9 +152,7 @@ object RealmManager {
         return list
     }
 
-    private fun extractBeaconObject(
-        beacon: BeaconModel, stBeacons: Collection<BeaconModel>
-    ): BeaconObject {
+    private fun extractBeaconObject(beacon: BeaconModel, stBeacons: Collection<BeaconModel>): BeaconObject {
         val list = LinkedList<Beacon>()
         list.add(extractBeacon(beacon))
         stBeacons.forEach { list.add(extractBeacon(it)) }

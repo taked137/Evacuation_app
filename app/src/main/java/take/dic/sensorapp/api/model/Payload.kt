@@ -23,9 +23,7 @@ data class Motion(
 )
 
 data class HeadingObject(
-    val x: String,
-    val y: String,
-    val z: String,
+    val direction: String,
     val receivedTime: String
 )
 
