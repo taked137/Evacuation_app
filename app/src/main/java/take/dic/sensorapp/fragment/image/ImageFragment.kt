@@ -15,10 +15,11 @@ import take.dic.sensorapp.fragment.value.base.BaseBindingFragment
 import java.util.*
 import kotlin.concurrent.schedule
 
-// TODO: BottomImgの表示座標調整
+// TODO: BottomImgの表示座標, 大きさ調整
 class ImageFragment : BaseBindingFragment() {
     lateinit var timer: Timer
     lateinit var image: MyImage
+    lateinit var prevBaseImg: BaseImg
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentImageBinding.inflate(inflater, container, false)
@@ -32,7 +33,6 @@ class ImageFragment : BaseBindingFragment() {
         super.onResume()
         timer = Timer()
         timer.schedule(2000, 2000) {
-            // 実際に通信して画像を表示する
             ApiController.sendSomeInformation(::setImage)
         }
     }
@@ -46,14 +46,22 @@ class ImageFragment : BaseBindingFragment() {
         fragmentManager!!.beginTransaction().remove(this).commit()
     }
 
+    private fun isEqual(prevBaseImg: BaseImg, nextBaseImg: BaseImg) =
+        prevBaseImg.URL == nextBaseImg.URL &&
+                prevBaseImg.deg == nextBaseImg.deg &&
+                prevBaseImg.exp == nextBaseImg.exp &&
+                prevBaseImg.offset == nextBaseImg.offset
+
     private fun setImage(response: Response<RegularResponse>) {
         val body = response.body() ?: return
         image.apply {
             this.avatarImg.set(AvatarImg(body.avatarImg.URL))
-            this.baseImg.set(
-                BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp)
-            )
+            if (!this@ImageFragment::prevBaseImg.isInitialized || !isEqual(prevBaseImg, this.baseImg.get()!!)) {
+                this.baseImg.set(BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp))
+            }
             this.arrowImg.set(ArrowImg(body.arrowImg.URL, body.arrowImg.deg))
         }
+
+        prevBaseImg = image.baseImg.get()!!
     }
 }

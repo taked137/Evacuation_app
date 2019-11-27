@@ -4,10 +4,12 @@ import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Rotate
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import take.dic.sensorapp.api.model.regular.image.ArrowImg
@@ -29,6 +31,7 @@ fun ImageView.loadBottomImage(img: BaseImg) {
         .asBitmap()
         .load(img.URL)
         .diskCacheStrategy(DiskCacheStrategy.DATA)
+        .skipMemoryCache(true)
         .transform(Rotate(img.deg.toInt()))
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
@@ -46,9 +49,9 @@ fun ImageView.loadBottomImage(img: BaseImg) {
                         (resource.height - img.offset.elementAt(1)) / img.exp
                     }
 
-                val bitmap = Bitmap.createBitmap(resource, img.offset.
+               val bitmap = Bitmap.createBitmap(resource, img.offset.
                     elementAt(0), img.offset.elementAt(1), width.roundToInt(), height.roundToInt())
-                Glide.with(context).load(bitmap).into(this@loadBottomImage)
+                Glide.with(context).load(bitmap!!).into(this@loadBottomImage)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {

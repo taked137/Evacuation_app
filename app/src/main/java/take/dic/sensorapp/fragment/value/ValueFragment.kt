@@ -77,6 +77,7 @@ class ValueFragment : Fragment() {
             Log.d("allSend", it.toString())
         }
 
+        // TODO: 本番用はDeleteしない
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction {
                 realm.delete(GPSValue::class.java)

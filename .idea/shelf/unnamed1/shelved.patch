@@ -1,0 +1,43 @@
+Index: app/src/main/java/take/dic/sensorapp/fragment/image/MyImage.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package take.dic.sensorapp.fragment.image\r\n\r\nimport android.databinding.BindingAdapter\r\nimport android.databinding.ObservableField\r\nimport android.graphics.Bitmap\r\nimport android.graphics.drawable.Drawable\r\nimport android.widget.ImageView\r\nimport com.bumptech.glide.Glide\r\nimport com.bumptech.glide.load.engine.DiskCacheStrategy\r\nimport com.bumptech.glide.load.resource.bitmap.Rotate\r\nimport com.bumptech.glide.request.target.CustomTarget\r\nimport com.bumptech.glide.request.transition.Transition\r\nimport take.dic.sensorapp.api.model.regular.image.ArrowImg\r\nimport take.dic.sensorapp.api.model.regular.image.AvatarImg\r\nimport take.dic.sensorapp.api.model.regular.image.BaseImg\r\nimport take.dic.sensorapp.service.DeviceInformationManager\r\nimport java.io.Serializable\r\nimport kotlin.math.roundToInt\r\n\r\nclass MyImage(avatarImg: AvatarImg, baseImg: BaseImg, arrowImg: ArrowImg) : Serializable {\r\n    val avatarImg: ObservableField<AvatarImg> = ObservableField(avatarImg)\r\n    val baseImg: ObservableField<BaseImg> = ObservableField(baseImg)\r\n    val arrowImg: ObservableField<ArrowImg> = ObservableField(arrowImg)\r\n}\r\n\r\n@BindingAdapter(\"android:image_bottom\")\r\nfun ImageView.loadBottomImage(img: BaseImg) {\r\n    Glide.with(context)\r\n        .asBitmap()\r\n        .load(img.URL)\r\n        .diskCacheStrategy(DiskCacheStrategy.DATA)\r\n        .transform(Rotate(img.deg.toInt()))\r\n        .into(object : CustomTarget<Bitmap>() {\r\n            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {\r\n                val width =\r\n                    if (DeviceInformationManager.size.x + img.offset.elementAt(0) < resource.width) {\r\n                        DeviceInformationManager.size.x / img.exp\r\n                    } else {\r\n                        (resource.width - img.offset.elementAt(0)) / img.exp\r\n                    }\r\n\r\n                val height =\r\n                    if (DeviceInformationManager.size.y + img.offset.elementAt(1) < resource.height) {\r\n                        DeviceInformationManager.size.y / img.exp\r\n                    } else {\r\n                        (resource.height - img.offset.elementAt(1)) / img.exp\r\n                    }\r\n\r\n                val bitmap = Bitmap.createBitmap(resource, img.offset.\r\n                    elementAt(0), img.offset.elementAt(1), width.roundToInt(), height.roundToInt())\r\n                Glide.with(context).load(bitmap).into(this@loadBottomImage)\r\n            }\r\n\r\n            override fun onLoadCleared(placeholder: Drawable?) {\r\n            }\r\n        })\r\n}\r\n\r\n@BindingAdapter(\"android:image_avatar\")\r\nfun ImageView.loadAvatarImage(img: AvatarImg) {\r\n    Glide.with(context)\r\n        .load(img.URL)\r\n        .diskCacheStrategy(DiskCacheStrategy.DATA)\r\n        .override(img.IMAGE_SIZE)\r\n        .into(this)\r\n}\r\n\r\n@BindingAdapter(\"android:image_arrow\")\r\nfun ImageView.loadDirectionImage(img: ArrowImg) {\r\n    Glide.with(context)\r\n        .load(img.URL)\r\n        .diskCacheStrategy(DiskCacheStrategy.DATA)\r\n        .override(img.IMAGE_SIZE)\r\n        .transform(Rotate(img.deg.toInt()))\r\n        .into(this)\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/take/dic/sensorapp/fragment/image/MyImage.kt	(revision 768a58abd6423a50829f88a68765c8eeb9e5be0d)
++++ app/src/main/java/take/dic/sensorapp/fragment/image/MyImage.kt	(date 1573796366641)
+@@ -4,7 +4,9 @@
+ import android.databinding.ObservableField
+ import android.graphics.Bitmap
+ import android.graphics.drawable.Drawable
++import android.widget.ImageSwitcher
+ import android.widget.ImageView
++import android.widget.ViewSwitcher
+ import com.bumptech.glide.Glide
+ import com.bumptech.glide.load.engine.DiskCacheStrategy
+ import com.bumptech.glide.load.resource.bitmap.Rotate
+@@ -24,7 +26,7 @@
+ }
+ 
+ @BindingAdapter("android:image_bottom")
+-fun ImageView.loadBottomImage(img: BaseImg) {
++fun ImageSwitcher.loadBottomImage(img: BaseImg) {
+     Glide.with(context)
+         .asBitmap()
+         .load(img.URL)
+@@ -48,12 +50,13 @@
+ 
+                 val bitmap = Bitmap.createBitmap(resource, img.offset.
+                     elementAt(0), img.offset.elementAt(1), width.roundToInt(), height.roundToInt())
+-                Glide.with(context).load(bitmap).into(this@loadBottomImage)
++                Glide.with(context).load(bitmap).into(this@loadBottomImage.nextView as Ima)
+             }
+ 
+             override fun onLoadCleared(placeholder: Drawable?) {
+             }
+         })
++        this.showNext()
+ }
+ 
+ @BindingAdapter("android:image_avatar")

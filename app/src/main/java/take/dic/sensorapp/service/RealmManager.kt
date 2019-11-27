@@ -9,6 +9,7 @@ import take.dic.sensorapp.sensorvalue.motion.MotionValue
 import java.util.*
 import kotlin.experimental.and
 
+// TODO: 都度送信、一括送信後のデータの扱い(削除?, 一応保存?)
 object RealmManager {
     fun getRealmModel(realm: Realm, model: GPSValue) =
         realm.createObject(GPSValue::class.java, UUID.randomUUID().toString()).apply {

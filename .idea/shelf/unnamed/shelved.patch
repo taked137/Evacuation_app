@@ -1,0 +1,36 @@
+Index: app/src/main/res/layout/fragment_image.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\">\r\n\r\n    <data>\r\n\r\n        <variable\r\n                name=\"image\"\r\n                type=\"take.dic.sensorapp.fragment.image.MyImage\" />\r\n    </data>\r\n\r\n    <FrameLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\">\r\n\r\n        <ImageView\r\n                android:id=\"@+id/image_bottom\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_gravity=\"center\"\r\n                android:image_bottom=\"@{image.baseImg}\"\r\n                android:scaleType=\"centerCrop\" />\r\n\r\n        <LinearLayout\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_marginBottom=\"50dp\"\r\n                android:orientation=\"vertical\">\r\n\r\n            <ImageView\r\n                    android:id=\"@+id/image_arrow\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_gravity=\"center_horizontal\"\r\n                    android:image_arrow=\"@{image.arrowImg}\" />\r\n\r\n            <ImageView\r\n                    android:id=\"@+id/image_avatar\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginTop=\"50dp\"\r\n                    android:image_avatar=\"@{image.avatarImg}\" />\r\n        </LinearLayout>\r\n    </FrameLayout>\r\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_image.xml	(revision 768a58abd6423a50829f88a68765c8eeb9e5be0d)
++++ app/src/main/res/layout/fragment_image.xml	(date 1573796269488)
+@@ -9,21 +9,22 @@
+     </data>
+ 
+     <FrameLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent">
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_gravity="center_horizontal|center_vertical">
+ 
+         <ImageView
+                 android:id="@+id/image_bottom"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:layout_gravity="center"
++                android:layout_gravity="center_horizontal|center_vertical"
+                 android:image_bottom="@{image.baseImg}"
+                 android:scaleType="centerCrop" />
+ 
+         <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:layout_gravity="center"
++                android:layout_gravity="center_horizontal|center_vertical"
+                 android:layout_marginBottom="50dp"
+                 android:orientation="vertical">
+ 
