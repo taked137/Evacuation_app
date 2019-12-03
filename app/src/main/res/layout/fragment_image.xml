@@ -23,7 +23,7 @@
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="50dp"
                 android:orientation="vertical">
 
@@ -38,7 +38,7 @@
                     android:id="@+id/image_avatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
                     android:image_avatar="@{image.avatarImg}" />
         </LinearLayout>
     </FrameLayout>
