@@ -53,6 +53,33 @@ object ApiController {
         })
     }
 
+    fun sendInitInformation(onResponse: (response: Response<RegularResponse>) -> Unit): Response<RegularResponse>? {
+        val motionList = RealmManager.getMotionList(null, RealmStatus.REGULAR_SENT)
+        val locationList = RealmManager.getLocationList(null, RealmStatus.REGULAR_SENT)
+        val beaconList = RealmManager.getBeaconList(null, RealmStatus.REGULAR_SENT)
+        val locationObjects = RealmManager.convertToLocationObjects(locationList)
+
+        val request = RegularRequest(
+            device = Device(),
+            payload = Payload(
+                RealmManager.convertToMotionObjects(motionList),
+                locationObjects.second,
+                locationObjects.first,
+                RealmManager.convertToBeaconObjects(beaconList)
+            )
+        )
+
+        val response = APIClient.instance.regular(request).execute()
+        // レスポンスコード200で正常に送信成功
+        if (response.code() == 200) {
+            onResponse(response)
+            updateStatus(motionList, locationList, beaconList, RealmStatus.REGULAR_SENT)
+            return response
+        }
+
+        return null
+    }
+
     // Realm内の情報を定期的に送信するメソッド
     fun sendSomeInformation(onResponse: (response: Response<RegularResponse>) -> Unit) {
         val motionList = RealmManager.getMotionList(null, RealmStatus.REGULAR_SENT)

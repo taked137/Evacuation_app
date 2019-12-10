@@ -6,6 +6,10 @@
         <variable
                 name="image"
                 type="take.dic.sensorapp.fragment.image.MyImage" />
+
+        <variable
+                name="fragment"
+                type="take.dic.sensorapp.fragment.image.ImageFragment" />
     </data>
 
     <FrameLayout

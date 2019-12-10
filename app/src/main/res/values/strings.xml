@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SensorApp</string>
+    <string name="title_home">Value</string>
+    <string name="title_dashboard">Image</string>
     <string name="button">Button</string>
     <string name="message1">位置情報へのアクセスはこのアプリに必要な機能なので許可をお願いします。</string>
     <string name="sbar_button1">OK?</string>

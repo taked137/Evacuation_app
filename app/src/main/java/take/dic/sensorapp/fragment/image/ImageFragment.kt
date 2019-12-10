@@ -25,6 +25,7 @@ class ImageFragment : BaseBindingFragment() {
         val binding = FragmentImageBinding.inflate(inflater, container, false)
         image = arguments!!.getSerializable("initialImage") as MyImage
         binding.image = image
+        binding.fragment = this
 
         return binding.root
     }
@@ -43,7 +44,7 @@ class ImageFragment : BaseBindingFragment() {
             timer.cancel()
         }
 
-        fragmentManager!!.beginTransaction().remove(this).commit()
+        //fragmentManager!!.beginTransaction().remove(this).commit()
     }
 
     private fun isEqual(prevBaseImg: BaseImg, nextBaseImg: BaseImg) =

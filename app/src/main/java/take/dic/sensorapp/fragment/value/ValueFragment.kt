@@ -6,17 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import io.realm.Realm
-import kotlinx.coroutines.*
-import retrofit2.Response
 import take.dic.sensorapp.R
 import take.dic.sensorapp.api.controller.ApiController
-import take.dic.sensorapp.api.model.regular.RegularResponse
-import take.dic.sensorapp.api.model.regular.image.ArrowImg
-import take.dic.sensorapp.api.model.regular.image.AvatarImg
-import take.dic.sensorapp.api.model.regular.image.BaseImg
-import take.dic.sensorapp.fragment.image.ImageFragment
-import take.dic.sensorapp.fragment.image.MyImage
 import take.dic.sensorapp.fragment.value.motion.AccelerationFragment
 import take.dic.sensorapp.fragment.value.motion.DirectionFragment
 import take.dic.sensorapp.fragment.value.motion.GyroFragment
@@ -28,8 +21,6 @@ import take.dic.sensorapp.sensorvalue.motion.motions.DirectionValue
 import take.dic.sensorapp.sensorvalue.motion.motions.GyroValue
 
 class ValueFragment : Fragment() {
-    private lateinit var initializeImage: Job
-    private var hasSent = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -52,32 +43,18 @@ class ValueFragment : Fragment() {
             motionValueMap.forEach { this.add(it.key, it.value) }
         }.commit()
 
-        return inflater.inflate(R.layout.fragment_value, container, false)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        initializeImage = GlobalScope.launch(Dispatchers.Default) {
-            while(!hasSent) {
-                delay(2000)
-                ApiController.sendSomeInformation(::setImage)
+        val view = inflater.inflate(R.layout.fragment_value, container, false)
+        view.findViewById<TextView>(R.id.text_all_send).setOnClickListener {
+            ApiController.sendAllInformation(null) {
+                Log.d("allSend", it.toString())
             }
         }
+
+        return view
     }
 
     override fun onStop() {
         super.onStop()
-
-        if(initializeImage.isActive) {
-            initializeImage.cancel()
-        }
-        hasSent = false
-
-        ApiController.sendAllInformation(System.currentTimeMillis()) {
-            Log.d("allSend", it.toString())
-        }
 
         // TODO: 本番用はDeleteしない
         Realm.getDefaultInstance().use { realm ->
@@ -90,24 +67,5 @@ class ValueFragment : Fragment() {
                 realm.delete(MotionValue::class.java)
             }
         }
-    }
-
-    private fun getImage(response: Response<RegularResponse>): MyImage {
-        val body = response.body()!!
-        return MyImage(
-            AvatarImg(body.avatarImg.URL),
-            BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp),
-            ArrowImg(body.arrowImg.URL, body.arrowImg.deg)
-        )
-    }
-
-    private fun setImage(response: Response<RegularResponse>) {
-        val iBundle = Bundle()
-        iBundle.putSerializable("initialImage", getImage(response))
-        val imageFragment = ImageFragment()
-        imageFragment.arguments = iBundle
-        activity!!.supportFragmentManager.beginTransaction()
-            .add(R.id.container, imageFragment).commit()
-        hasSent = true
     }
 }
