@@ -50,7 +50,7 @@ class ValueFragment : Fragment() {
             }
         }
 
-        return view
+            return view
     }
 
     override fun onStop() {
