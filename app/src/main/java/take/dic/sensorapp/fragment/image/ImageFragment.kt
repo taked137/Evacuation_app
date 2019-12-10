@@ -1,6 +1,7 @@
 package take.dic.sensorapp.fragment.image
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,22 +48,22 @@ class ImageFragment : BaseBindingFragment() {
         //fragmentManager!!.beginTransaction().remove(this).commit()
     }
 
-    private fun isEqual(prevBaseImg: BaseImg, nextBaseImg: BaseImg) =
-        prevBaseImg.URL == nextBaseImg.URL &&
-                prevBaseImg.deg == nextBaseImg.deg &&
-                prevBaseImg.exp == nextBaseImg.exp &&
-                prevBaseImg.offset == nextBaseImg.offset
+    private fun isEqual(prevBaseImg: BaseImg, url: String, deg: Double, offset: Collection<Double>, exp: Double) =
+        prevBaseImg.URL == url &&
+                prevBaseImg.deg == deg &&
+                prevBaseImg.exp == exp &&
+                prevBaseImg.offset == offset
 
     private fun setImage(response: Response<RegularResponse>) {
         val body = response.body() ?: return
         image.apply {
             this.avatarImg.set(AvatarImg(body.avatarImg.URL))
-            if (!this@ImageFragment::prevBaseImg.isInitialized || !isEqual(prevBaseImg, this.baseImg.get()!!)) {
-                this.baseImg.set(BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp))
+            if (!this@ImageFragment::prevBaseImg.isInitialized ||
+                !isEqual(prevBaseImg, body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp)) {
+                prevBaseImg = BaseImg(body.baseImg.URL, body.baseImg.deg, body.baseImg.offset, body.baseImg.exp)
+                this.baseImg.set(prevBaseImg)
             }
             this.arrowImg.set(ArrowImg(body.arrowImg.URL, body.arrowImg.deg))
         }
-
-        prevBaseImg = image.baseImg.get()!!
     }
 }

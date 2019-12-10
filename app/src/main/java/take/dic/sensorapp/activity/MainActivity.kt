@@ -63,8 +63,11 @@ class MainActivity : AppCompatActivity() {
         Realm.setDefaultConfiguration(config)
 
         this.windowManager.defaultDisplay.getSize(DeviceInformationManager.size)
-        DeviceInformationManager.id =
-            Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+        DeviceInformationManager.apply {
+            this.id =
+                Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+            this.size.x -= 400
+        }
 
         if (savedInstanceState == null) {
             valueFragment = ValueFragment()

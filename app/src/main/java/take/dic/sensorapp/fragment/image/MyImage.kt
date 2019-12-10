@@ -4,12 +4,11 @@ import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.util.Log
+import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Rotate
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import take.dic.sensorapp.api.model.regular.image.ArrowImg
@@ -17,6 +16,8 @@ import take.dic.sensorapp.api.model.regular.image.AvatarImg
 import take.dic.sensorapp.api.model.regular.image.BaseImg
 import take.dic.sensorapp.service.DeviceInformationManager
 import java.io.Serializable
+import java.util.*
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class MyImage(avatarImg: AvatarImg, baseImg: BaseImg, arrowImg: ArrowImg) : Serializable {
@@ -27,6 +28,9 @@ class MyImage(avatarImg: AvatarImg, baseImg: BaseImg, arrowImg: ArrowImg) : Seri
 
 @BindingAdapter("android:image_bottom")
 fun ImageView.loadBottomImage(img: BaseImg) {
+    val newOffset = LinkedList<Pair<Boolean, Int>>()
+    img.offset.forEach { newOffset.add(Pair(it < 0, abs(it.roundToInt()))) }
+
     Glide.with(context)
         .asBitmap()
         .load(img.URL)
@@ -36,27 +40,38 @@ fun ImageView.loadBottomImage(img: BaseImg) {
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 val width =
-                    if (DeviceInformationManager.size.x + img.offset.elementAt(0) < resource.width) {
+                    if (DeviceInformationManager.size.x + newOffset[0].second < resource.width) {
                         DeviceInformationManager.size.x / img.exp
                     } else {
-                        (resource.width - img.offset.elementAt(0)) / img.exp
+                        (resource.width - newOffset[0].second) / img.exp
                     }
 
                 val height =
-                    if (DeviceInformationManager.size.y + img.offset.elementAt(1) < resource.height) {
+                    if (DeviceInformationManager.size.y + newOffset[1].second < resource.height) {
                         DeviceInformationManager.size.y / img.exp
                     } else {
-                        (resource.height - img.offset.elementAt(1)) / img.exp
+                        (resource.height - newOffset[1].second) / img.exp
                     }
 
-               val bitmap = Bitmap.createBitmap(resource, img.offset.
-                    elementAt(0), img.offset.elementAt(1), width.roundToInt(), height.roundToInt())
+                val xMargin = if (newOffset[0].first) {
+                    0
+                } else {
+                    newOffset[0].second
+                }
+                val yMargin = if (newOffset[1].first) {
+                    0
+                } else {
+                    newOffset[1].second
+                }
+
+                val bitmap = Bitmap.createBitmap(resource, xMargin, yMargin, width.roundToInt(), height.roundToInt())
                 Glide.with(context).load(bitmap!!).into(this@loadBottomImage)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
             }
         })
+    setMargin(newOffset)
 }
 
 @BindingAdapter("android:image_avatar")
@@ -76,4 +91,21 @@ fun ImageView.loadDirectionImage(img: ArrowImg) {
         .override(img.IMAGE_SIZE)
         .transform(Rotate(img.deg.toInt()))
         .into(this)
+}
+
+fun ImageView.setMargin(offset: List<Pair<Boolean, Int>>) {
+    this.layoutParams = (this.layoutParams as ViewGroup.MarginLayoutParams).apply {
+        this.leftMargin = if (offset[0].first) {
+            offset[0].second
+        } else {
+            0
+        }
+
+        this.topMargin = if (offset[1].first) {
+            offset[1].second
+        }
+        else {
+            0
+        }
+    }
 }
