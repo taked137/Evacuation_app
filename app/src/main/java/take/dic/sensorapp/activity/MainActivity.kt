@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
         DeviceInformationManager.apply {
             this.id =
                 Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-            this.size.x -= 400
+            this.size.x -= 300
+            this.size.y -= 100
         }
 
         if (savedInstanceState == null) {

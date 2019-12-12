@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
