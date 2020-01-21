@@ -20,16 +20,16 @@
             android:id="@+id/gyro_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/acceleration_container"
-            android:layout_marginTop="-420dp"
+            android:layout_below="@+id/center"
+            android:layout_marginTop="-150dp"
             android:layout_toEndOf="@+id/center" />
 
     <RelativeLayout
             android:id="@+id/direction_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/acceleration_container"
-            android:layout_marginTop="-420dp"
+            android:layout_below="@+id/center"
+            android:layout_marginTop="-150dp"
             android:layout_toStartOf="@+id/center" />
 
     <RelativeLayout
