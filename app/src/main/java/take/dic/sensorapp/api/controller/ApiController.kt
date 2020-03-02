@@ -76,6 +76,10 @@ object ApiController {
             updateStatus(motionList, locationList, beaconList, RealmStatus.REGULAR_SENT)
             return response
         }
+        // 失敗時
+        else {
+
+        }
 
         return null
     }

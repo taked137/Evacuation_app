@@ -57,6 +57,7 @@ class ValueFragment : Fragment() {
         super.onStop()
 
         // TODO: 本番用はDeleteしない
+        /*
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction {
                 realm.delete(GPSValue::class.java)
@@ -66,6 +67,6 @@ class ValueFragment : Fragment() {
                 realm.delete(DirectionValue::class.java)
                 realm.delete(MotionValue::class.java)
             }
-        }
+        }*/
     }
 }
