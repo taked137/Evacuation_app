@@ -19,14 +19,14 @@
     - [app/src/main/java/take/dic/sensorapp/api/controller/ApiController.kt](app/src/main/java/take/dic/sensorapp/api/controller/ApiController.kt) 内の`OnFailure`等 (詳しくはコメントで記載) にAPIがエラーをした場合の処理を書くことができます
 
 ### センサー取得方法
-- *app/src/main/java/take/dic/sensorapp/sensorvalue/* 内にセンサ値取得用のモデルがあります
-    -  *beacon*
+- *[app/src/main/java/take/dic/sensorapp/sensorvalue/](app/src/main/java/take/dic/sensorapp/sensorvalue)* 内にセンサ値取得用のモデルがあります
+    -  *[beacon/](app/src/main/java/take/dic/sensorapp/sensorvalue/beacon)*
         -  ビーコン
-    -  *motion*
+    -  *[motion/](app/src/main/java/take/dic/sensorapp/sensorvalue/motion)*
         -  加速度, 角速度, 方位
     -  [GPSValue.kt](app/src/main/java/take/dic/sensorapp/sensorvalue/GPSValue.kt)
         -  GPS
-- *app/src/main/java/take/dic/sensorapp/fragment/value/* 内の`HogeFragment.kt`に実際に値を取得する処理を記述しています (Hoge: Acceleration, Direction, Gyro, Beacon, GPS)
+- *[app/src/main/java/take/dic/sensorapp/fragment/value/](app/src/main/java/take/dic/sensorapp/fragment/value)* 内の`HogeFragment.kt`に実際に値を取得する処理を記述しています (Hoge: Acceleration, Direction, Gyro, Beacon, GPS)
 
 ### APIの定義
-- *app/src/main/java/take/dic/sensorapp/api/model/* 内の各プログラム
+- *[app/src/main/java/take/dic/sensorapp/api/model/](app/src/main/java/take/dic/sensorapp/api/model)* 内の各プログラム
