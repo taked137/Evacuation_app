@@ -15,6 +15,7 @@
 
 ## プログラム説明
 ### 画面での画像表示
+- Glideを使用
 - [app/src/main/java/take/dic/sensorapp/fragment/image/MyImage.kt](app/src/main/java/take/dic/sensorapp/fragment/image/MyImage.kt) の`loadHogeImage`メソッドに記述されています (Hoge: Avatar, Bottom, Direction)
     - [app/src/main/java/take/dic/sensorapp/api/controller/ApiController.kt](app/src/main/java/take/dic/sensorapp/api/controller/ApiController.kt) 内の`OnFailure`等 (詳しくはコメントで記載) にAPIがエラーをした場合の処理を書くことができます
 
@@ -30,3 +31,7 @@
 
 ### APIの定義
 - *[app/src/main/java/take/dic/sensorapp/api/model/](app/src/main/java/take/dic/sensorapp/api/model)* 内の各プログラム
+
+### 各種取得値の保存
+- データベースとしてRealmを使用
+- [app/src/main/java/take/dic/sensorapp/service/RealmManager.kt](app/src/main/java/take/dic/sensorapp/service/RealmManager.kt)に記述
